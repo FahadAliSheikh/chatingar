@@ -64,4 +64,47 @@ const signupFields = [
   },
 ];
 
-export { loginFields, signupFields };
+const loginWORFields = [
+  {
+    labelText: "Username",
+    labelFor: "username",
+    id: "username",
+    name: "username",
+    type: "text",
+    autoComplete: "username",
+    isRequired: true,
+    placeholder: "Username",
+  },
+  {
+    labelText: "Country",
+    labelFor: "country",
+    id: "country",
+    name: "country",
+    type: "text",
+    autoComplete: "country",
+    isRequired: true,
+    placeholder: "country",
+  },
+  {
+    labelText: "Gender",
+    labelFor: "gender",
+    id: "gender",
+    name: "gender",
+    type: "text",
+    autoComplete: "gender",
+    isRequired: true,
+    placeholder: "Gender",
+  },
+  {
+    labelText: "Age",
+    labelFor: "age",
+    id: "age",
+    name: "age",
+    type: "number",
+    autoComplete: "age",
+    isRequired: true,
+    placeholder: "age",
+  },
+];
+
+export { loginFields, signupFields, loginWORFields };

@@ -26,32 +26,34 @@ export function Login() {
   const authenticateUser = () => {};
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="-space-y-px">
-        {fields.map((field) => (
-          <Input
-            key={field.id}
-            onChange={handleChange}
-            value={loginState[field.id]}
-            labelText={field.labelText}
-            labelFor={field.labelFor}
-            id={field.id}
-            name={field.name}
-            type={field.type}
-            isRequired={field.isRequired}
-            placeholder={field.placeholder}
-            customClass=""
-          />
-        ))}
-      </div>
+    <section className="max-w-md mx-auto shadow-lg p-10 shadow-purple-200">
+      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div className="-space-y-px">
+          {fields.map((field) => (
+            <Input
+              key={field.id}
+              onChange={handleChange}
+              value={loginState[field.id]}
+              labelText={field.labelText}
+              labelFor={field.labelFor}
+              id={field.id}
+              name={field.name}
+              type={field.type}
+              isRequired={field.isRequired}
+              placeholder={field.placeholder}
+              customClass=""
+            />
+          ))}
+        </div>
 
-      <CheckBox />
-      <Button
-        onSubmit={handleSubmit}
-        text="Login"
-        type="button"
-        action="submit"
-      />
-    </form>
+        <CheckBox />
+        <Button
+          onSubmit={handleSubmit}
+          text="Login"
+          type="button"
+          action="submit"
+        />
+      </form>
+    </section>
   );
 }

@@ -21,6 +21,13 @@
       "@features/*": ["src/features/*"],
       "@pages/*": ["src/pages/*"],
       "@constants/*": ["src/constants/*"],
+      "@config/*": ["src/config/*"],
+      "@store/*": ["src/store/*"],
+      "@slices/*": ["src/store/slices/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@saga/*": ["src/saga/*"],
+      "@socket/*": ["src/socket/*"],
+
 
     }
 

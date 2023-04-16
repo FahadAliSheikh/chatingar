@@ -24,30 +24,32 @@ export function Signup() {
   const createAccount = () => {};
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="">
-        {fields.map((field) => (
-          <Input
-            key={field.id}
-            onChange={handleChange}
-            value={signupState[field.id]}
-            labelText={field.labelText}
-            labelFor={field.labelFor}
-            id={field.id}
-            name={field.name}
-            type={field.type}
-            isRequired={field.isRequired}
-            placeholder={field.placeholder}
-            customClass=""
+    <section className="max-w-md mx-auto shadow-lg p-10 shadow-purple-200">
+      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div className="">
+          {fields.map((field) => (
+            <Input
+              key={field.id}
+              onChange={handleChange}
+              value={signupState[field.id]}
+              labelText={field.labelText}
+              labelFor={field.labelFor}
+              id={field.id}
+              name={field.name}
+              type={field.type}
+              isRequired={field.isRequired}
+              placeholder={field.placeholder}
+              customClass=""
+            />
+          ))}
+          <Button
+            onSubmit={handleSubmit}
+            text="Signup"
+            type="button"
+            action="submit"
           />
-        ))}
-        <Button
-          onSubmit={handleSubmit}
-          text="Signup"
-          type="button"
-          action="submit"
-        />
-      </div>
-    </form>
+        </div>
+      </form>
+    </section>
   );
 }
