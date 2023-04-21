@@ -6,11 +6,14 @@ import { countries } from "@constants/countries";
 // redux login
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useSigninUserMutation } from "@/store/api/authApi";
+
 export function LoginWOR() {
   console.log("inside loging wor");
 
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const [signinUser, { data, isLoading }] = useSigninUserMutation();
 
   // const socket = useSocket();
 
@@ -41,8 +44,8 @@ export function LoginWOR() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    user.uuid = uuid();
+    // user.uuid = uuid();
+    console.log("event", event);
 
     navigate("/chat");
   };
