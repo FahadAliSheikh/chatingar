@@ -5,11 +5,13 @@ import { User } from "@interfaces/user";
 // redux login
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "@store/slices/authSlice";
 
 export function Navbar() {
   console.log("inside navbar");
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
 
   // const socket = useSocket();
 
@@ -97,41 +99,48 @@ export function Navbar() {
                 <a href="/chat">Chat page</a>
               </li>
             </ul>
-
-            <div className="mt-3 space-y-2 lg:hidden md:hidden">
-              <a
-                href={Routes.signin}
-                className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-                onClick={signInHandler}
-              >
-                Sign in
-              </a>
-              <a
-                href={Routes.signup}
-                className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-                onClick={signOutHandler}
-              >
-                Sign Up
-              </a>
-            </div>
+            {user ? (
+              <p>{user.name}</p>
+            ) : (
+              <div className="mt-3 space-y-2 lg:hidden md:hidden">
+                <a
+                  href={Routes.signin}
+                  className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                  onClick={signInHandler}
+                >
+                  Sign in
+                </a>
+                <a
+                  href={Routes.signup}
+                  className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                  onClick={signOutHandler}
+                >
+                  Sign Up
+                </a>
+              </div>
+            )}
           </div>
         </div>
-        <div className="hidden space-x-2 md:inline-block">
-          <a
-            href={Routes.signin}
-            className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-            onClick={signInHandler}
-          >
-            Sign in
-          </a>
-          <a
-            href={Routes.signup}
-            className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-            onClick={signOutHandler}
-          >
-            Sign Up
-          </a>
-        </div>
+        {user ? (
+          <p>{user.name}</p>
+        ) : (
+          <div className="hidden space-x-2 md:inline-block">
+            <a
+              href={Routes.signin}
+              className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+              onClick={signInHandler}
+            >
+              Sign in
+            </a>
+            <a
+              href={Routes.signup}
+              className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+              onClick={signOutHandler}
+            >
+              Sign Up
+            </a>
+          </div>
+        )}
       </div>
     </nav>
   );

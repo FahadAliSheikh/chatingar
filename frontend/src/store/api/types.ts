@@ -36,6 +36,7 @@ export interface IUser {
   pic: string;
   token: string;
   _id: string;
+  isGuest: boolean;
 }
 
 export interface IPostResponse {

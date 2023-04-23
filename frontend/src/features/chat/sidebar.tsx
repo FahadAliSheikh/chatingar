@@ -6,38 +6,42 @@ type SidebarProps = {
 
 import { useDispatch } from "react-redux";
 import { setDisplayedComponent } from "@slices/displaySlice";
+import { Link } from "react-router-dom";
 
 export function Sidebar() {
   //const [open, setOpen] = React.useState(true);
   const dispatch = useDispatch();
 
   return (
-    <div className="bg-purple-500 text-white flex justify-left h-screen w-20 rounded-l-xl">
-      <div className="w-2/4 p-1 my-5">
-        <h1 className="text-2xl font-bold mb-4">LOGO</h1>
-        <button
-          className="hover:text-gray-400 my-4"
-          onClick={() => dispatch(setDisplayedComponent("UserSearchForm"))}
-        >
+    <div className="flex flex-col bg-purple-500 text-white justify-left h-full w-20 rounded-bl-xl">
+      {/* <div className=" p-1 my-5"> */}
+      <button
+        className="hover:text-gray-400 my-4"
+        // onClick={() => dispatch(setDisplayedComponent("UserSearchForm"))}
+      >
+        <Link to="search">
           <FaSearch size={20} /> Search
-        </button>
+        </Link>
+      </button>
 
-        {/* <button
+      {/* <button
           className="hover:text-gray-400 my-4"
           onClick={() => dispatch(setDisplayedComponent("ChatBox"))}
         >
           <BsChatRightTextFill size={20} /> ChatBox
         </button> */}
 
-        <button
-          className="hover:text-gray-400 my-4"
-          onClick={() => dispatch(setDisplayedComponent("Inbox"))}
-        >
+      <button
+        className="hover:text-gray-400 my-4"
+        // onClick={() => dispatch(setDisplayedComponent("Inbox"))}
+      >
+        <Link to="inbox">
           <FaInbox size={20} />
           Inbox
-        </button>
+        </Link>
+      </button>
 
-        {/* <ul>
+      {/* <ul>
           <li className="mb-5">
             <a href="#" className="hover:text-gray-400">
               {<FaSearch size={20} title="Search" />} Search
@@ -54,7 +58,7 @@ export function Sidebar() {
             </a>
           </li>
         </ul> */}
-      </div>
+      {/* </div> */}
     </div>
   );
 }

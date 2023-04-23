@@ -12,8 +12,15 @@ import {
 
 export function GenderFilter() {
   return (
-    <div className="p-1 bg-purple-500  w-60 rounded-tr-xl text-white">
+    <div className="p-1 bg-purple-500  w-full rounded-t-xl text-white flex flex-row">
+      <h1 className="text-2xl font-bold m-4">LOGO</h1>
+
       <ul className="flex felx-row justify-center gap-8 mt-4">
+        <li className="mb-5">
+          <a href="#" className="hover:text-gray-400 ">
+            {<FaMale size={20} title="male" />} All
+          </a>
+        </li>
         <li className="mb-5">
           <a href="#" className="hover:text-gray-400 ">
             {<FaMale size={20} title="male" />} Male

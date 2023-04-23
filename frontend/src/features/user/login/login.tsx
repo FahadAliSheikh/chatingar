@@ -5,10 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { User } from "@interfaces/user";
 import { countries } from "@constants/countries";
 // redux login
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useSigninUserMutation } from "@/store/api/authApi";
-import { setCredentials, selectUser } from "@/store/slices/authSlice";
+import { setCredentials, selectCurrentUser } from "@/store/slices/authSlice";
 
 interface LoginState {
   email: string;
@@ -52,7 +52,7 @@ export function Login() {
       toast.success("Logged in successfully");
       // setOpenPostModal(false);
       dispatch(setCredentials(data));
-      // navigate("/chat");
+      navigate("/chat");
     }
 
     if (isError) {

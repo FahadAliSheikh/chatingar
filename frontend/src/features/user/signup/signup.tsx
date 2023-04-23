@@ -73,7 +73,7 @@ export function Signup() {
       console.log("inside iss successfull");
       toast.success("Registered successfully, Please login and start chatting");
       // setOpenPostModal(false);
-      navigate("/login");
+      navigate("/signin");
     }
 
     if (isError) {
