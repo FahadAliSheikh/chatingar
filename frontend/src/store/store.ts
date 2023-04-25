@@ -1,4 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
+import thunk from "redux-thunk";
+import storage from "redux-persist/lib/storage";
+// import storageSession from "reduxjs-toolkit-persist/lib/storage/session";
+import storageSession from "reduxjs-toolkit-persist/lib/storage/session";
+
 import displayReducer from "./slices/displaySlice";
 import authReducer from "./slices/authSlice";
 import userReducer from "./slices/userSlice";
@@ -9,16 +15,38 @@ import { userApi } from "./api/userApi";
 import { chatApi } from "./api/chatApi";
 
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
+// const rootPersistConfig = {
+//   key: "root",
+//   storage,
+// };
+
+const authPersistConfig = {
+  key: "auth",
+  storage: storageSession,
+};
+
+const rootReducer: any = combineReducers({
+  display: displayReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
+  user: userReducer,
+  chat: chatReducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [chatApi.reducerPath]: chatApi.reducer,
+});
+// const persistedReducer = persistReducer(authPersistConfig, authReducer);
+
 export const store = configureStore({
-  reducer: {
-    display: displayReducer,
-    auth: authReducer,
-    user: userReducer,
-    chat: chatReducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
-    [chatApi.reducerPath]: chatApi.reducer,
-  },
+  // reducer: {
+  //   display: displayReducer,
+  //   auth: persistedReducer,
+  //   user: userReducer,
+  //   chat: chatReducer,
+  //   [authApi.reducerPath]: authApi.reducer,
+  //   [userApi.reducerPath]: userApi.reducer,
+  //   [chatApi.reducerPath]: chatApi.reducer,
+  // },
+  reducer: rootReducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
@@ -34,6 +62,7 @@ export const store = configureStore({
 });
 
 // export default store;
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

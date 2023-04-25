@@ -5,7 +5,7 @@ import { User } from "@interfaces/user";
 // redux login
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser } from "@store/slices/authSlice";
+import { selectCurrentUser, logout } from "@store/slices/authSlice";
 
 export function Navbar() {
   console.log("inside navbar");
@@ -16,7 +16,7 @@ export function Navbar() {
   // const socket = useSocket();
 
   const [navbar, setNavbar] = useState(false);
-  const signOutHandler = (
+  const signUpHandler = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     event.preventDefault();
@@ -28,6 +28,13 @@ export function Navbar() {
   ) => {
     event.preventDefault();
 
+    navigate("/signin");
+  };
+  const signOutHandler = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    dispatch(logout());
     navigate("/signin");
   };
   return (
@@ -100,7 +107,17 @@ export function Navbar() {
               </li>
             </ul>
             {user ? (
-              <p>{user.name}</p>
+              <div className="mt-3 space-y-2 lg:hidden md:hidden">
+                <p>{user.name}</p>
+
+                <a
+                  // href={Routes.signin}
+                  className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                  onClick={signOutHandler}
+                >
+                  Sign Out
+                </a>
+              </div>
             ) : (
               <div className="mt-3 space-y-2 lg:hidden md:hidden">
                 <a
@@ -113,7 +130,7 @@ export function Navbar() {
                 <a
                   href={Routes.signup}
                   className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-                  onClick={signOutHandler}
+                  onClick={signUpHandler}
                 >
                   Sign Up
                 </a>
@@ -122,7 +139,17 @@ export function Navbar() {
           </div>
         </div>
         {user ? (
-          <p>{user.name}</p>
+          <div className="mt-3 space-y-2 ">
+            <span>{user.name}</span>
+
+            <a
+              // href={Routes.signin}
+              className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+              onClick={signOutHandler}
+            >
+              Sign Out
+            </a>
+          </div>
         ) : (
           <div className="hidden space-x-2 md:inline-block">
             <a
@@ -135,7 +162,7 @@ export function Navbar() {
             <a
               href={Routes.signup}
               className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-              onClick={signOutHandler}
+              onClick={signUpHandler}
             >
               Sign Up
             </a>
