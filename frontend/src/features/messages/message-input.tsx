@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSendMessageMutation } from "@/store/api/chatApi";
 import {
-  setSelectedChat,
   getSelectedChat,
   setChatMessages,
   getChatMessages,
@@ -12,15 +11,12 @@ export function MessageInput() {
   const dispatch = useDispatch();
   const selectedChat = useSelector(getSelectedChat);
   const chatMessages = useSelector(getChatMessages);
-
-  // const newMessage = useSelector(getNewMessage);
   const [newMessage, setNewMessage] = useState("");
 
   const [
     sendMessage,
     { data: sentMessageData, isLoading, error, isError, isSuccess },
   ] = useSendMessageMutation();
-  // const [newMessage, setNewMessage] = useState("");
 
   const typingHandler = (e: any) => {
     if (e.key !== "Enter") {
@@ -28,7 +24,6 @@ export function MessageInput() {
     }
   };
   const handleSendMessage = async (event: any) => {
-    // setUser( ...message, message: event.target.value );
     // if (event.key === "Enter") {
     console.log("inside handle send message");
     event.preventDefault();

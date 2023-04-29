@@ -1,49 +1,45 @@
 import { SingleChat } from "./single-chat";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedUser } from "@slices/userSlice";
-import { getSelectedChat, setSelectedChat } from "@slices/chatSlice";
-import React, { useState, useEffect, useRef } from "react";
+import { setSelectedChat } from "@slices/chatSlice";
+import { useEffect } from "react";
 
-import { MessageInput } from "../messages/message-input";
-import { Messages } from "../messages/messages";
-import {
-  useGetSelectedChatMutation,
-  useGetChatMessagesQuery,
-  useSendMessageMutation,
-  chatApi,
-} from "@/store/api/chatApi";
+import { useGetSelectedChatMutation } from "@/store/api/chatApi";
+
 import { ChatHeader } from "./chat-header";
 export function ChatBox() {
-  console.log(" CHATBOX comp");
+  console.log(" CHATBOX component=>");
+  let content: any;
 
   const dispatch = useDispatch();
   const selectedUser = useSelector(getSelectedUser);
 
   const [getSelectedChat, { data, isLoading, error, isError, isSuccess }] =
     useGetSelectedChatMutation();
-
+  if (!selectedUser) {
+    content = <p>Please Select a user to start chat...</p>;
+  }
   useEffect(() => {
-    getSelectedChat(selectedUser._id)
-      .unwrap()
-      .then((data) => {
-        dispatch(setSelectedChat(data));
-      });
+    if (selectedUser) {
+      getSelectedChat(selectedUser._id)
+        .unwrap()
+        .then((data: any) => {
+          dispatch(setSelectedChat(data));
+        });
+    }
   }, [selectedUser]);
 
-  let content: any;
-
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
+  if (isError) {
+    content = <p>Error Occured!</p>;
+  }
   if (isSuccess) {
     content = (
       <section className="flex h-full flex-col bg-purple-100 border-lg">
         <ChatHeader selectedUser={selectedUser} />
         <SingleChat selectedChat={data} />
-
-        {/* <div className="flex flex-col flex-grow h-0 p-4 overflow-auto">
-          <Messages selectedChat={data} /> 
-          /* <Messages />
-        </div> */}
-
-        {/* <MessageInput /> */}
       </section>
     );
   }

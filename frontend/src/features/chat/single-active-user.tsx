@@ -1,9 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setDisplayedComponent } from "@slices/displaySlice";
-import { getSelectedUser, setSelectedUser } from "@slices/userSlice";
-import React, { useState, useEffect } from "react";
-import { setSelectedChat } from "@slices/chatSlice";
-import { useGetSelectedChatMutation } from "@/store/api/chatApi";
+import { setSelectedUser } from "@slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export function SingleActiveUser({ user }: any) {
@@ -11,18 +8,14 @@ export function SingleActiveUser({ user }: any) {
   const dispatch = useDispatch();
 
   const handleClick = async (user: any) => {
-    console.log("clicked on user", user);
     dispatch(setSelectedUser(user));
-    // await dispatch(setDisplayedComponent("ChatBox"));
     navigate("chat-box");
   };
   return (
     <div
-      // className="py-3 sm:py-4 bg-pink-300 "
       className="flex w-full py-4 max-w-xs bg-pink-300 border border-white-800"
       onClick={() => handleClick(user)}
     >
-      {/* <div className="flex items-center space-x-4"> */}
       <div className="flex-shrink-0">
         <img
           className="w-8 h-8 rounded-full"

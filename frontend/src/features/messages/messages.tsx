@@ -1,100 +1,63 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  KeyboardEvent,
-  MouseEventHandler,
-  useCallback,
-} from "react";
-import {
-  isLastMessage,
-  isSameSender,
-  isSameSenderMargin,
-  isSameUser,
-  isSentByMe,
-} from "@config/chatLogics";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { isSentByMe } from "@config/chatLogics";
 import { selectCurrentUser } from "@store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetSelectedChatMutation,
-  useGetChatMessagesQuery,
-  useSendMessageMutation,
-} from "@/store/api/chatApi";
-import {
-  setSelectedChat,
-  getSelectedChat,
-  getChatMessages,
-  getNewMessage,
-  setChatMessages,
-} from "@slices/chatSlice";
+import { useSendMessageMutation } from "@/store/api/chatApi";
+import { getSelectedChat } from "@slices/chatSlice";
 
 export function Messages({ messagesData }: any) {
-  console.log("MESSAGES COMP");
-  const [sendMessage, { data: sentMessageData }] = useSendMessageMutation();
+  console.log("MESSAGES COMPONENT=>");
+  const [sendMessage, { data: sentMessageData, isError, error }] =
+    useSendMessageMutation();
 
   const [messages, setMessages]: any = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // setMessages(messagesData);
-  console.log(messages);
   useEffect(() => {
     if (messagesData) {
       setMessages(messagesData);
     }
   }, [messagesData]);
-  const dispatch = useDispatch();
-  const user = useSelector(selectCurrentUser);
+
+  const selectedUser = useSelector(selectCurrentUser);
   const selectedChat = useSelector(getSelectedChat);
 
   const handleSendMessage = async (event: any) => {
     event.preventDefault();
+    console.log(inputRef?.current?.value);
 
-    console.log("inside handle send message");
-    console.log(event);
-    console.log(newMessage);
-
+    const newMessage = inputRef?.current?.value;
     if ((event.type === "click" || event.key === "Enter") && newMessage) {
-      // setNewMessage("");
       sendMessage({
         chatId: selectedChat?._id,
         content: newMessage,
       })
         .unwrap()
         .then((data) => {
-          console.log("after send message success!!");
-          setNewMessage("");
+          inputRef.current.value = null;
           setMessages([...messages, data]);
-          console.log("messages after sending message", messages);
         });
     }
   };
 
-  const typingHandler = useCallback(
-    (e: any) => {
-      if (e.key !== "Enter") {
-        setNewMessage(e.target.value);
-      }
-    },
-    [setNewMessage]
-  );
   return (
     <>
       <div className="flex flex-col flex-grow h-0 p-4 overflow-auto">
         <div className="flex flex-col h-full">
           {messages &&
-            user &&
+            selectedUser &&
             messages.map((m: any, i: any) => (
               <div
                 key={i}
                 className={`flex ${
-                  isSentByMe(messages, m, i, user?._id)
+                  isSentByMe(messages, m, i, selectedUser?._id)
                     ? "justify-end"
                     : "justify-start"
                 } mb-4`}
               >
                 <div
                   className={`max-w-md py-2 px-4 ${
-                    isSentByMe(messages, m, i, user?._id)
+                    isSentByMe(messages, m, i, selectedUser?._id)
                       ? "bg-blue-500 text-white rounded-br-md rounded-tl-md rounded-tr-md"
                       : "bg-gray-100 text-gray-700 rounded-bl-md rounded-tl-md rounded-tr-md"
                   }`}
@@ -112,8 +75,9 @@ export function Messages({ messagesData }: any) {
           className="block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
           name="message"
           required
-          onChange={typingHandler}
-          value={newMessage}
+          // onChange={typingHandler}
+          // value={newMessage}
+          ref={inputRef}
           // onKeyDown={handleSendMessage}
         />
         <button onClick={handleSendMessage}>
