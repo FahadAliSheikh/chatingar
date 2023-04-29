@@ -12,6 +12,12 @@ export function Messages({ messagesData }: any) {
 
   const [messages, setMessages]: any = useState([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to the bottom of the messages component
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     if (messagesData) {
@@ -64,6 +70,7 @@ export function Messages({ messagesData }: any) {
                 >
                   <p>{m.content}</p>
                 </div>
+                <div ref={messagesEndRef} />
               </div>
             ))}
         </div>
