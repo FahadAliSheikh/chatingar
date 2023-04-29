@@ -9,18 +9,12 @@ import { useNavigate } from "react-router-dom";
 export function SingleActiveUser({ user }: any) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const [getSelectedChat, { data, isLoading, error, isError, isSuccess }] =
-  //   useGetSelectedChatMutation();
 
   const handleClick = async (user: any) => {
     console.log("clicked on user", user);
+    dispatch(setSelectedUser(user));
     // await dispatch(setDisplayedComponent("ChatBox"));
     navigate("chat-box");
-    await dispatch(setSelectedUser(user));
-    if (user) {
-      // const selectedChat = await getSelectedChat(user?._id);
-      // dispatch(setSelectedChat(selectedChat));
-    }
   };
   return (
     <div
@@ -44,10 +38,6 @@ export function SingleActiveUser({ user }: any) {
           {user?.gender}, {user?.age}, {user?.country}
         </p>
       </div>
-      {/* <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-900">
-          $320
-        </div> */}
-      {/* </div> */}
     </div>
   );
 }

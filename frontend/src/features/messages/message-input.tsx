@@ -1,32 +1,48 @@
 import React, { useState } from "react";
-import { setSelectedChat, getSelectedChat } from "@slices/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useSendMessageMutation } from "@/store/api/chatApi";
+import {
+  setSelectedChat,
+  getSelectedChat,
+  setChatMessages,
+  getChatMessages,
+} from "@slices/chatSlice";
 
 export function MessageInput() {
   const dispatch = useDispatch();
   const selectedChat = useSelector(getSelectedChat);
-  console.log("selected chat in message input component", selectedChat);
-  const [sendMessage, { data, isLoading, error, isError, isSuccess }] =
-    useSendMessageMutation();
+  const chatMessages = useSelector(getChatMessages);
+
+  // const newMessage = useSelector(getNewMessage);
   const [newMessage, setNewMessage] = useState("");
 
+  const [
+    sendMessage,
+    { data: sentMessageData, isLoading, error, isError, isSuccess },
+  ] = useSendMessageMutation();
+  // const [newMessage, setNewMessage] = useState("");
+
   const typingHandler = (e: any) => {
-    setNewMessage(e.target.value);
+    if (e.key !== "Enter") {
+      setNewMessage(e.target.value);
+    }
   };
   const handleSendMessage = async (event: any) => {
     // setUser( ...message, message: event.target.value );
+    // if (event.key === "Enter") {
+    console.log("inside handle send message");
     event.preventDefault();
 
-    console.log("button clicked!!!", newMessage);
-    const sentMessageData = await sendMessage({
+    await sendMessage({
       chatId: selectedChat?._id,
       content: newMessage,
     }).unwrap();
+    // }
   };
   if (isSuccess) {
     console.log("message sent successfully");
-    console.log(data);
+    // setNewMessage("");
+    dispatch(setChatMessages([...chatMessages, sentMessageData]));
   } else if (isError) {
     console.log("something went wrong");
     console.log(error);
@@ -74,6 +90,7 @@ export function MessageInput() {
         required
         onChange={typingHandler}
         value={newMessage}
+        // onKeyDown={handleSendMessage}
       />
       {/* <button>
         <svg

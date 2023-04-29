@@ -10,11 +10,8 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000",
     prepareHeaders: (headers, { getState }) => {
-      console.log("inside header");
       const user = (getState() as RootState).auth.user;
       if (user) {
-        console.log("inside user");
-
         // include token in req header
         headers.set("authorization", `Bearer ${user.token}`);
         return headers;
@@ -26,6 +23,8 @@ export const userApi = createApi({
       // providesTags: ["Users"],
       // providesTags:[]
       query: () => {
+        console.log("inside get active users query");
+
         return {
           url: "/api/user",
           method: "GET",

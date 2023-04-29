@@ -10,21 +10,18 @@ export const chatApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000",
     prepareHeaders: (headers, { getState }) => {
-      console.log("inside header");
       const user = (getState() as RootState).auth.user;
       if (user) {
-        console.log("inside user");
-
         // include token in req header
         headers.set("authorization", `Bearer ${user.token}`);
         return headers;
       }
     },
   }),
+  keepUnusedDataFor: 0,
   endpoints: (builder) => ({
     getSelectedChat: builder.mutation({
       query: (userId: string) => {
-        console.log("userid in chatapi", userId);
         return {
           url: "/api/chat",
           method: "POST",
@@ -36,15 +33,18 @@ export const chatApi = createApi({
     }),
     getChatMessages: builder.query({
       query: ({ chatId, sessionId }) => {
-        console.log("inside get chat chat messages query>>>", chatId);
+        console.log("inside query=============");
+        console.log(`/api/message/${chatId}`);
         return {
           url: `/api/message/${chatId}`,
           method: "GET",
         };
       },
+      keepUnusedDataFor: 0, // disable caching
     }),
     sendMessage: builder.mutation({
       query: (body: { chatId: string; content: string }) => {
+        console.log("message body", body);
         return {
           url: "/api/message",
           method: "POST",
@@ -62,3 +62,5 @@ export const {
   useGetChatMessagesQuery,
   useSendMessageMutation,
 } = chatApi;
+
+export const { reducer } = chatApi;

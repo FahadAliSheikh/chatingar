@@ -52,6 +52,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     // getDefaultMiddleware().concat(authApi.middleware),
     getDefaultMiddleware({}).concat([
+      thunk,
       authApi.middleware,
       userApi.middleware,
       chatApi.middleware,

@@ -19,17 +19,10 @@ interface SignupState {
   country: string;
 }
 export function Signup() {
-  console.log("inside loging");
-
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const [signupUser, { data, isLoading, error, isError, isSuccess }] =
     useSignupUserMutation();
-  console.log("data", data);
-  console.log("is error", isError);
-  console.log("is isSuccess", isSuccess);
-  console.log("is isLoading", isLoading);
-
   // const socket = useSocket();
 
   const [user, setUser] = useState<SignupState>({

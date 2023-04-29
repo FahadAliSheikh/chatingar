@@ -7,12 +7,16 @@ import { IUser } from "../api/types";
 interface ChatState {
   chats: IUser[] | null;
   selectedChat: any | null;
+  messages: any | null;
+  newMessage: any | null;
 }
 
 // Define the initial state using that type
 const initialState: ChatState = {
   chats: [],
   selectedChat: null,
+  messages: [],
+  newMessage: "",
 };
 
 export const chatSlice = createSlice({
@@ -27,14 +31,35 @@ export const chatSlice = createSlice({
     ) => {
       state.selectedChat = action.payload;
     },
+    setChatMessages: (
+      state,
+      // action: PayloadAction<{ name: string; token: string }>
+      action: PayloadAction<any>
+    ) => {
+      console.log("inside setting messages to state");
+      console.log(action.payload);
+      state.messages = action.payload;
+      console.log(state.messages.length);
+    },
+    setNewMessage: (
+      state,
+      // action: PayloadAction<{ name: string; token: string }>
+      action: PayloadAction<any>
+    ) => {
+      state.newMessage = action.payload;
+    },
   },
 });
 
-export const { setSelectedChat } = chatSlice.actions;
+export const { setSelectedChat, setChatMessages, setNewMessage } =
+  chatSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.auth.value;
 export const getSelectedChat = (state: RootState) => state.chat.selectedChat;
+export const getChatMessages = (state: RootState) => state.chat.messages;
+export const getNewMessage = (state: RootState) => state.chat.newMessage;
+
 // export const getSelectedUser = (state: RootState) => state.user.selectedUser;
 
 export default chatSlice.reducer;

@@ -5,7 +5,7 @@ import { IUser } from "../api/types";
 
 // Define a type for the slice state
 interface UserState {
-  users: IUser[] | null;
+  activeUsers: IUser[] | null;
   selectedUser: IUser | null;
   // name: string | null;
   // token: string | null;
@@ -13,7 +13,7 @@ interface UserState {
 
 // Define the initial state using that type
 const initialState: UserState = {
-  users: [],
+  activeUsers: [],
   selectedUser: null,
 };
 
@@ -28,7 +28,7 @@ export const userSlice = createSlice({
       // action: PayloadAction<{ name: string; token: string }>
       action: PayloadAction<IUser[]>
     ) => {
-      state.users = action.payload;
+      state.activeUsers = action.payload;
     },
     setSelectedUser: (
       state,
@@ -44,7 +44,7 @@ export const { logout, setActiveUsers, setSelectedUser } = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.auth.value;
-export const getActiveUsers = (state: RootState) => state.user.users;
+export const getActiveUsers = (state: RootState) => state.user.activeUsers;
 export const getSelectedUser = (state: RootState) => state.user.selectedUser;
 
 export default userSlice.reducer;

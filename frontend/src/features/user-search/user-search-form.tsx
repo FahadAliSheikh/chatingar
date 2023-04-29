@@ -43,7 +43,6 @@ export function UserSearchForm() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(user);
     // Call an API to submit the user data
     return navigate("/chat");
   };

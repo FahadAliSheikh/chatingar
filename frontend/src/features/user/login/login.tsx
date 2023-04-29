@@ -15,8 +15,6 @@ interface LoginState {
   password: string;
 }
 export function Login() {
-  console.log("inside loging");
-
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const [signinUser, { data, isLoading, error, isError, isSuccess }] =
@@ -38,17 +36,11 @@ export function Login() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("user", user);
     signinUser({ ...user });
   };
-  console.log("data", data);
-  console.log("is error", isError);
-  console.log("is isSuccess", isSuccess);
-  console.log("is isLoading", isLoading);
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("inside iss successfull");
       toast.success("Logged in successfully");
       // setOpenPostModal(false);
       dispatch(setCredentials(data));
@@ -56,8 +48,6 @@ export function Login() {
     }
 
     if (isError) {
-      console.log("inside iss error");
-
       if (Array.isArray((error as any).data.error)) {
         (error as any).data.error.forEach((el: any) =>
           toast.error(el.message, {
