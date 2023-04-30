@@ -19,14 +19,24 @@ export const userApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getActiveUsers: builder.query<IUser[], void>({
-      // providesTags: ["Users"],
-      // providesTags:[]
-      query: () => {
+    getActiveUsers: builder.query({
+      query: ({ name, gender, country }) => {
+        console.log(gender);
         console.log("inside get active users query");
-
+        let url = "/api/user/?";
+        if (name) {
+          url = url + "name=" + name + "&";
+        }
+        if (gender) {
+          console.log("gender is selected");
+          url = url + "gender=" + gender + "&";
+        }
+        if (country) {
+          url = url + "country=" + country + "&";
+        }
+        console.log(url);
         return {
-          url: "/api/user",
+          url: url,
           method: "GET",
         };
       },

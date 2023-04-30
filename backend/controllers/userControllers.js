@@ -57,7 +57,23 @@ const authUser = asyncHandler(async (req, res) => {
 const allUsers = asyncHandler(async (req, res) => {
   // const keyword = req.query.search;
   // console.log(keyword);
-  const keyword = req.query.search
+  console.log(req.query);
+  let name = req.query.name;
+  let gender = req.query.gender;
+  let country = req.query.country;
+  let searchObje = {};
+  if (req.query.name) {
+    searchObje.name = { $regex: req.query.name, $options: "i" };
+  }
+  if (req.query.gender) {
+    searchObje.gender = req.query.gender;
+  }
+  if (req.query.country) {
+    searchObje.country = req.query.country;
+  }
+
+  console.log(searchObje);
+  keyword = req.query.search
     ? {
         $or: [
           { name: { $regex: req.query.search, $options: "i" } },
@@ -65,7 +81,9 @@ const allUsers = asyncHandler(async (req, res) => {
         ],
       }
     : {};
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  const users = await User.find(searchObje).find({
+    _id: { $ne: req.user._id },
+  });
   res.send(users);
 });
 module.exports = {

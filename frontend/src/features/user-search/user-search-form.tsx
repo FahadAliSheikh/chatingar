@@ -1,37 +1,35 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { userApi } from "@/store/api/userApi";
+import { useDispatch } from "react-redux";
+import { setActiveUsers } from "@/store/slices/userSlice";
+import { countries } from "@constants/countries";
 
 interface User {
-  username: string;
-  age: number;
+  name: string;
   gender: "male" | "female";
   country: string;
 }
 
-const countries = [
-  { code: "US", name: "United States" },
-  { code: "CA", name: "Canada" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "AU", name: "Australia" },
-];
-
 export function UserSearchForm() {
-  let navigate = useNavigate();
+  let dispatch = useDispatch();
+  const [
+    executeGetActiveUsersQuery,
+    { data: activeUsers = [], isError, error, isLoading, isSuccess },
+  ] = userApi.endpoints.getActiveUsers.useLazyQuery();
 
   const [user, setUser] = useState<User>({
-    username: "",
-    age: 18,
+    name: "",
     gender: "male",
     country: "",
   });
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, username: event.target.value });
+    setUser({ ...user, name: event.target.value });
   };
 
-  const handleAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, age: parseInt(event.target.value, 10) });
-  };
+  // const handleAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setUser({ ...user, age: parseInt(event.target.value, 10) });
+  // };
 
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, gender: event.target.value as User["gender"] });
@@ -44,7 +42,12 @@ export function UserSearchForm() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Call an API to submit the user data
-    return navigate("/chat");
+    executeGetActiveUsersQuery(user)
+      .unwrap()
+      .then((data) => {
+        console.log("setting new active users in state");
+        dispatch(setActiveUsers(data));
+      });
   };
 
   return (
@@ -57,21 +60,17 @@ export function UserSearchForm() {
         className="max-w-md mx-auto shadow-lg p-10 shadow-purple-200"
       >
         <div className="mb-4">
-          <label
-            htmlFor="username"
-            className="block mb-2 font-bold text-gray-700"
-          >
+          <label htmlFor="name" className="block mb-2 font-bold text-gray-700">
             Username
           </label>
           <input
-            id="username"
-            name="username"
+            id="name"
+            name="name"
             type="text"
-            value={user.username}
+            value={user.name}
             onChange={handleUsernameChange}
             // className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
-            required
             placeholder="Select a unique username"
           />
         </div>
@@ -137,12 +136,12 @@ export function UserSearchForm() {
           >
             Country
           </label>
+
           <select
             id="country"
             name="country"
             value={user.country}
             onChange={handleCountryChange}
-            required
             className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:ring-purple-500 focus:border-purple-500"
           >
             <option value="">All Countries</option>
