@@ -30,7 +30,7 @@ export const isSameSender = (messages: any, m: any, i: any, userId: any) => {
 };
 
 export const isSentByMe = (messages: any, m: any, i: any, userId: any) => {
-  return i < messages.length - 1 && m.sender._id === userId;
+  return i <= messages.length - 1 && m.sender._id === userId;
 };
 export const isLastMessage = (messages: any, i: any, userId: any) => {
   return (

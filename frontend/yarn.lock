@@ -327,6 +327,18 @@
   resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.17.15.tgz"
   integrity sha512-DjDa9ywLUUmjhV2Y9wUTIF+1XsmuFGvZoCmOWkli1XcNAh5t25cc7fgsCx4Zi/Uurep3TTLyDiKATgGEg61pkA==
 
+"@headlessui/react@^1.7.14":
+  version "1.7.14"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.14.tgz#75f19552c535113640fe8a3a40e71474f49e89c9"
+  integrity sha512-znzdq9PG8rkwcu9oQ2FwIy0ZFtP9Z7ycS+BAqJ3R5EIqC/0bJGvhT7193rFf+45i9nnPsYvCQVW4V/bB9Xc+gA==
+  dependencies:
+    client-only "^0.0.1"
+
+"@heroicons/react@^2.0.17":
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-2.0.17.tgz#42a8086bc434ceefc03592f20c4e81b11e915cf8"
+  integrity sha512-90GMZktkA53YbNzHp6asVEDevUQCMtxWH+2UK2S8OpnLEu7qckTJPhNxNQG52xIR1WFTwFqtH6bt7a60ZNcLLA==
+
 "@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz"
@@ -624,6 +636,11 @@ chokidar@^3.5.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
+client-only@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/client-only/-/client-only-0.0.1.tgz#38bba5d403c41ab150bff64a95c85013cf73bca1"
+  integrity sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
+
 clsx@^1.1.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
@@ -865,6 +882,11 @@ has@^1.0.3:
   integrity sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==
   dependencies:
     function-bind "^1.1.1"
+
+heroicons@^2.0.17:
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/heroicons/-/heroicons-2.0.17.tgz#08c99c7185c4943df1e2ffe3a2fd1bc87b270ff0"
+  integrity sha512-9d5HE+YwwBkzDAIwt3x9O4bPmv5UGKrvqP4D/wwMaaKunPQkoI6FQjWXuXZNKGNieW/1+r1nf40bydEIi76jjw==
 
 hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"

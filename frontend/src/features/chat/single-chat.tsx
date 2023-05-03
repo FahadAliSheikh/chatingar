@@ -1,9 +1,12 @@
 import { useEffect, useRef } from "react";
 import { Messages } from "../messages/messages";
 import { chatApi } from "@/store/api/chatApi";
+import { getSocket } from "@/socket";
 
 export function SingleChat({ selectedChat }: any) {
   console.log("single chat component=>");
+  let socket = getSocket();
+  console.log("socket id in single chat comp", socket.id);
   let content: any = <p>single chat component loading</p>;
 
   const timestampRef = useRef(Date.now()).current;
@@ -33,6 +36,7 @@ export function SingleChat({ selectedChat }: any) {
     content = <p>Some Error occured</p>;
   }
   if (isSuccess && data) {
+    socket.emit("join chat", selectedChat._id);
     content = <>{data && <Messages messagesData={data} />}</>;
   }
 

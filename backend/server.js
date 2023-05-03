@@ -49,29 +49,78 @@ const io = require("socket.io")(server, {
   },
 });
 
+// let users = [];
+
+// const addUser = (userId, socketId) => {
+//   !users.some((user) => user.userId === userId) &&
+//     users.push({ userId, socketId });
+// };
+
+// const removeUser = (socketId) => {
+//   users = users.filter((user) => user.socketId !== socketId);
+// };
+
+// const getUser = (userId) => {
+//   return users.find((user) => user.userId === userId);
+// };
+
+// io.on("connection", (socket) => {
+//   //when ceonnect
+//   console.log("a user connected.");
+
+//   //take userId and socketId from user
+//   socket.on("addUser", (userId) => {
+//     addUser(userId, socket.id);
+//     io.emit("getUsers", users);
+//   });
+
+//   //send and get message
+//   socket.on("sendMessage", ({ receiverId, message }) => {
+//     const user = getUser(receiverId);
+//     io.to(user.socketId).emit("getMessage", {
+//       senderId,
+//       message,
+//     });
+//   });
+
+//   //when disconnect
+//   socket.on("disconnect", () => {
+//     console.log("a user disconnected!");
+//     removeUser(socket.id);
+//     io.emit("getUsers", users);
+//   });
+// });
+
 io.on("connection", (socket) => {
-  console.log("connected to socket.io");
+  console.log("connected to socket.io", socket.id);
+  io.emit("welcome", "testing to receive message on client from server");
   socket.on("setUp", (userData) => {
     socket.join(userData._id);
-    console.log(userData._id);
-    socket.emit("connected");
+    // console.log(userData._id);
+    console.log(socket.rooms);
+    socket.emit("connected", userData);
   });
 
   socket.on("join chat", (room) => {
     socket.join(room);
     console.log("user joined room:", room);
+    console.log(socket.rooms);
   });
 
   socket.on("typing", (room) => socket.in(room).emit("typing"));
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
   socket.on("new message", (newMessageReceived) => {
+    console.log("new message event call", newMessageReceived);
+    console.log(socket.rooms);
     let chat = newMessageReceived.chat;
     if (!chat.users) return console.log("chat.users not defined!");
     chat.users.forEach((user) => {
       if (user._id == newMessageReceived.sender._id) return;
-      socket.in(user._id).emit("message received", newMessageReceived);
+      socket.to(user._id).emit("message received", newMessageReceived);
+      io.emit("message received", newMessageReceived);
     });
+    // io.emit("message received", newMessageReceived);
   });
 
   socket.off("setup", () => {

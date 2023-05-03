@@ -4,9 +4,11 @@ import { selectCurrentUser } from "@store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useSendMessageMutation } from "@/store/api/chatApi";
 import { getSelectedChat } from "@slices/chatSlice";
+import { getSocket } from "@/socket";
 
 export function Messages({ messagesData }: any) {
   console.log("MESSAGES COMPONENT=>");
+  let socket = getSocket();
   const [sendMessage, { data: sentMessageData, isError, error }] =
     useSendMessageMutation();
 
@@ -18,7 +20,13 @@ export function Messages({ messagesData }: any) {
     // Scroll to the bottom of the messages component
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      console.log("new message received", newMessageReceived);
+      setMessages([...messages, newMessageReceived]);
+      console.log(messages);
+    });
+  }, [messages]);
   useEffect(() => {
     if (messagesData) {
       setMessages(messagesData);
@@ -40,8 +48,9 @@ export function Messages({ messagesData }: any) {
       })
         .unwrap()
         .then((data) => {
+          socket.emit("new message", data);
           inputRef.current.value = null;
-          setMessages([...messages, data]);
+          // setMessages([...messages, data]);
         });
     }
   };

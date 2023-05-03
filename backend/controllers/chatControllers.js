@@ -16,7 +16,6 @@ const accessChat = asyncHandler(async (req, res) => {
   })
     .populate("users", "-password")
     .populate("latestMessage");
-  console.log("chat found", isChat);
   isChat = await User.populate(isChat, {
     path: "latestMessage.sender",
     select: "name pic email",
@@ -65,7 +64,6 @@ const fetchChats = asyncHandler(async (req, res) => {
 });
 
 const createGroupChat = asyncHandler(async (req, res) => {
-  console.log("inside create group");
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ message: "Please fill all the fields!" });
   }

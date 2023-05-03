@@ -6,6 +6,13 @@ import { User } from "@interfaces/user";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, logout } from "@store/slices/authSlice";
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+
+function classNames(...classes: any) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export function Navbar() {
   console.log("inside navbar");
@@ -102,11 +109,47 @@ export function Navbar() {
               <li className="text-white hover:text-indigo-200">
                 <a href="#">Contact US</a>
               </li>
-              <li className="text-white hover:text-indigo-200">
-                <a href="/chat">Chat page</a>
-              </li>
+
+              <>
+                {user ? (
+                  <>
+                    <li className="text-white hover:text-indigo-200">
+                      <a href="/chat">Chat page</a>
+                    </li>
+                    <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
+                      <a href="#">My Profile</a>
+                    </li>
+                    <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
+                      <a href="#" onClick={signOutHandler}>
+                        Sign Out
+                      </a>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
+                      <a
+                        href={Routes.signin}
+                        className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                        onClick={signInHandler}
+                      >
+                        Sign in
+                      </a>
+                    </li>
+                    <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
+                      <a
+                        href={Routes.signup}
+                        className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                        onClick={signUpHandler}
+                      >
+                        Sign Up
+                      </a>
+                    </li>
+                  </>
+                )}
+              </>
             </ul>
-            {user ? (
+            {/* {user ? (
               <div className="mt-3 space-y-2 lg:hidden md:hidden">
                 <p>{user.name}</p>
 
@@ -135,10 +178,10 @@ export function Navbar() {
                   Sign Up
                 </a>
               </div>
-            )}
+            )} */}
           </div>
         </div>
-        {user ? (
+        {/* {user ? (
           <div className="mt-3 space-y-2 ">
             <span>{user.name}</span>
 
@@ -165,6 +208,94 @@ export function Navbar() {
               onClick={signUpHandler}
             >
               Sign Up
+            </a>
+          </div>
+        )} */}
+        {user ? (
+          <Menu
+            as="div"
+            className="relative inline-block text-left hidden md:block lg:block"
+          >
+            <div>
+              <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                {user?.name}
+                <ChevronDownIcon
+                  className="-mr-1 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </Menu.Button>
+            </div>
+            {/* <div>
+            <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+              <span className="sr-only">Profile</span>
+              <img
+                className="h-8 w-8 rounded-full"
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt=""
+              />
+            </Menu.Button>
+          </div> */}
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="py-1">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        href="#"
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        View Profile
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        href="#"
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                        onClick={signOutHandler}
+                      >
+                        Sign Out
+                      </a>
+                    )}
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        ) : (
+          <div className="hidden space-x-2 md:inline-block">
+            <a
+              href={Routes.signin}
+              className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+              onClick={signInHandler}
+            >
+              Sign in
+            </a>
+            <a
+              href={Routes.signup}
+              className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+              onClick={signUpHandler}
+            >
+              Register for free
             </a>
           </div>
         )}

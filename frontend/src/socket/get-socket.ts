@@ -6,7 +6,6 @@ const SOCKET_URL = "http://localhost:5000";
 let socket: Socket;
 
 export const getSocket = () => {
-  console.log("get socket running!");
   if (!socket) {
     socket = io(SOCKET_URL);
   }
