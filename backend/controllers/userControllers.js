@@ -4,7 +4,7 @@ const generateToken = require("../config/generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, gender, age, country } = req.body;
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !gender || !age || !country) {
     res.status(400);
     throw new Error("Please enter all the fields!");
   }
@@ -20,6 +20,7 @@ const registerUser = asyncHandler(async (req, res) => {
     gender,
     age,
     country,
+    hasEmail: true,
   });
   if (user) {
     res.status(201).json({
@@ -28,6 +29,7 @@ const registerUser = asyncHandler(async (req, res) => {
       email: user.email,
       pic: user.pic,
       token: generateToken(user._id),
+      hasEmail: user.hasEmail,
     });
   } else {
     throw new Error("Failed to create new user!");
@@ -47,6 +49,7 @@ const authUser = asyncHandler(async (req, res) => {
       country: user.country,
       pic: user.pic,
       token: generateToken(user._id),
+      hasEmail: user.email,
     });
   } else {
     throw new Error("Invalid email or password!");
@@ -86,8 +89,44 @@ const allUsers = asyncHandler(async (req, res) => {
   });
   res.send(users);
 });
+
+const registerWOEmail = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  const { name, password, gender, age, country } = req.body;
+  if (!name || !gender || !age || !country) {
+    res.status(400);
+    throw new Error("Please enter all the fields!");
+  }
+  // const userExist = await User.findOne({ email });
+  // if (userExist) {
+  //   res.status(400);
+  //   throw new Error("User already exists!");
+  // }
+  const user = await User.create({
+    name,
+    password: "password123!",
+    gender,
+    age,
+    country,
+    hasEmail: false,
+  });
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      pic: user.pic,
+      token: generateToken(user._id),
+      hasEmail: user.hasEmail,
+    });
+  } else {
+    throw new Error("Failed to create new user!");
+  }
+});
+
 module.exports = {
   registerUser,
+  registerWOEmail,
   authUser,
   allUsers,
 };

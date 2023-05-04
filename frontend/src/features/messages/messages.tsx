@@ -13,6 +13,7 @@ export function Messages({ messagesData }: any) {
     useSendMessageMutation();
 
   const [messages, setMessages]: any = useState([]);
+  // const [arrivalMessages, setArrivalMessages]: any = useState(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -20,14 +21,31 @@ export function Messages({ messagesData }: any) {
     // Scroll to the bottom of the messages component
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       console.log("new message received", newMessageReceived);
-      setMessages([...messages, newMessageReceived]);
-      console.log(messages);
+      // setArrivalMessages(newMessageReceived);
+      console.log(newMessageReceived);
+      if (
+        newMessageReceived &&
+        selectedChat?.users.some(
+          (user: any) => user._id === newMessageReceived?.sender._id
+        )
+      ) {
+        console.log("isko display krna hai!");
+        setMessages([...messages, newMessageReceived]);
+      } else {
+        // display notification here
+        console.log("notification");
+      }
+
+      // console.log(messages);
     });
   }, [messages]);
+
   useEffect(() => {
+    console.log("messages data wala ue");
     if (messagesData) {
       setMessages(messagesData);
     }
@@ -48,6 +66,7 @@ export function Messages({ messagesData }: any) {
       })
         .unwrap()
         .then((data) => {
+          console.log("new Message data", data);
           socket.emit("new message", data);
           inputRef.current.value = null;
           // setMessages([...messages, data]);

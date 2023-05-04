@@ -32,9 +32,28 @@ export const authApi = createApi({
         };
       },
     }),
+    signupWOM: builder.mutation({
+      query: (body: {
+        name: string;
+        password: string;
+        age: number;
+        gender: string;
+        country: string;
+      }) => {
+        return {
+          url: "/api/user/registerwom",
+          method: "POST",
+          body,
+        };
+      },
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useSigninUserMutation, useSignupUserMutation } = authApi;
+export const {
+  useSigninUserMutation,
+  useSignupUserMutation,
+  useSignupWOMMutation,
+} = authApi;

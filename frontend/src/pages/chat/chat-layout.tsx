@@ -17,12 +17,15 @@ export function ChatLayoutPage() {
 
   useEffect(() => {
     console.log("socket emit wala uf -3");
-    socket.emit("setUp", currentUser);
+    socket.on("connected", (user) => {
+      console.log("getting response after connection");
+      socket.emit("setUp", currentUser);
+    });
     console.log(currentUser);
     // socket.on("getUsers", (userdata) => {
     //   console.log("user coming from socket", userdata);
     // });
-  }, []);
+  });
   let searchData = {
     name: "",
     gender: "",
