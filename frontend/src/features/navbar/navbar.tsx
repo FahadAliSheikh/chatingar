@@ -97,9 +97,11 @@ export function Navbar() {
             }`}
           >
             <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-              <li className="text-white hover:text-indigo-200">
-                <a href="/home">Home</a>
-              </li>
+              {!user && (
+                <li className="text-white hover:text-indigo-200">
+                  <a href="/home">Home</a>
+                </li>
+              )}
               <li className="text-white hover:text-indigo-200">
                 <a href="#">Blog</a>
               </li>
@@ -149,68 +151,8 @@ export function Navbar() {
                 )}
               </>
             </ul>
-            {/* {user ? (
-              <div className="mt-3 space-y-2 lg:hidden md:hidden">
-                <p>{user.name}</p>
-
-                <a
-                  // href={Routes.signin}
-                  className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-                  onClick={signOutHandler}
-                >
-                  Sign Out
-                </a>
-              </div>
-            ) : (
-              <div className="mt-3 space-y-2 lg:hidden md:hidden">
-                <a
-                  href={Routes.signin}
-                  className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-                  onClick={signInHandler}
-                >
-                  Sign in
-                </a>
-                <a
-                  href={Routes.signup}
-                  className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-                  onClick={signUpHandler}
-                >
-                  Sign Up
-                </a>
-              </div>
-            )} */}
           </div>
         </div>
-        {/* {user ? (
-          <div className="mt-3 space-y-2 ">
-            <span>{user.name}</span>
-
-            <a
-              // href={Routes.signin}
-              className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-              onClick={signOutHandler}
-            >
-              Sign Out
-            </a>
-          </div>
-        ) : (
-          <div className="hidden space-x-2 md:inline-block">
-            <a
-              href={Routes.signin}
-              className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-              onClick={signInHandler}
-            >
-              Sign in
-            </a>
-            <a
-              href={Routes.signup}
-              className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-              onClick={signUpHandler}
-            >
-              Sign Up
-            </a>
-          </div>
-        )} */}
         {user ? (
           <Menu
             as="div"
