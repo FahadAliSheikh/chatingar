@@ -1,5 +1,7 @@
 import { useDispatch } from "react-redux";
-import { setDisplayedComponent } from "@slices/displaySlice";
+import { setDisplayedComponent } from "@/store/slices/displaySliceOld";
+import { setDisplayedClasses } from "@/store/slices/displaySlice";
+
 import { setSelectedUser } from "@slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -9,11 +11,17 @@ export function SingleActiveUser({ user }: any) {
 
   const handleClick = async (user: any) => {
     dispatch(setSelectedUser(user));
+    dispatch(
+      setDisplayedClasses([
+        "h-full md:h-5/6 flex flex-col w-full md:w-3/5 hidden md:block lg:block",
+        "bg-purple-100 sm:block w-full rounded-xl text-black h-full",
+      ])
+    );
     navigate("chat-box");
   };
   return (
     <div
-      className="flex w-full py-4 max-w-xs bg-pink-300 border border-white-800"
+      className="flex w-full py-4 bg-pink-300 border border-white-800"
       onClick={() => handleClick(user)}
     >
       <div className="flex-shrink-0">

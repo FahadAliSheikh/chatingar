@@ -1,5 +1,8 @@
+import { BackToUserBtn } from "./back-to-user-btn";
+
 export function ChatHeader({ selectedUser }: any) {
   let content: any;
+
   if (!selectedUser) {
     content = (
       <div className=" flex items-center  p-3 border-b border-gray-300">
@@ -28,6 +31,7 @@ export function ChatHeader({ selectedUser }: any) {
     content = (
       <div className=" flex items-center  p-3 border-b border-gray-300">
         <div className="flex items-center space-x-4">
+          <BackToUserBtn />
           <div className="flex-shrink-0">
             <img
               className="w-8 h-8 rounded-full"

@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage";
 // import storageSession from "reduxjs-toolkit-persist/lib/storage/session";
 import storageSession from "reduxjs-toolkit-persist/lib/storage/session";
 
+// import displayReducerOld from "./slices/displaySliceOld";
 import displayReducer from "./slices/displaySlice";
 import authReducer from "./slices/authSlice";
 import userReducer from "./slices/userSlice";
@@ -27,6 +28,7 @@ const authPersistConfig = {
 
 const rootReducer: any = combineReducers({
   display: displayReducer,
+  // displayOld: displayReducerOld,
   auth: persistReducer(authPersistConfig, authReducer),
   user: userReducer,
   chat: chatReducer,

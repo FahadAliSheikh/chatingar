@@ -1,5 +1,5 @@
-import React, { ReactNode, useEffect } from "react";
-import { ActiveUsers, Sidebar, ChatWindowLayout } from "@/features/chat";
+import React, { ReactNode, useEffect, useState } from "react";
+import { ActiveUsers, Sidebar } from "@/features/chat";
 import { GenderFilter } from "@/features/user-search";
 import { Outlet } from "react-router-dom";
 import { userApi } from "@/store/api/userApi";
@@ -7,9 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveUsers } from "@slices/userSlice";
 import { selectCurrentUser } from "@slices/authSlice";
 import { getSocket } from "@/socket";
+import { getDispalyClasses } from "@/store/slices/displaySlice";
 
 export function ChatLayoutPage() {
   const currentUser = useSelector(selectCurrentUser);
+  const displayClasses = useSelector(getDispalyClasses);
+  // const displayClasses = useSelector(
+  //   (state: any) => state.display.userDiveClasses
+  // );
+  console.log("display classes", displayClasses);
+  const [userDivClasse, setUseDivClass] = useState("");
+  const [outletDivClasses, setOutletDivClasses] = useState("");
+  useEffect(() => {
+    console.log("insideee eeeeeeeeeeeeeeeeeeee");
+    setUseDivClass(displayClasses[0]);
+    setOutletDivClasses(displayClasses[1]);
+    console.log(userDivClasse);
+    console.log(outletDivClasses);
+  }, [displayClasses]);
+
   console.log("CHAT PAGE =>");
   const dispatch = useDispatch();
   let socket = getSocket();
@@ -45,24 +61,13 @@ export function ChatLayoutPage() {
     console.log("UF-2");
 
     if (isSuccess) {
-      // socket.on("getUsers", (userdata) => {
-      //   console.log("user coming from socket", userdata);
-      //   userdata.forEach((sUser: any) => {
-      //     activeUsers.forEach((dbuser: any) => {
-      //       if (sUser.userId === dbuser._id) {
-      //         newActiveUsers.push(dbuser);
-      //       }
-      //     });
-      //     console.log("new active USer", newActiveUsers);
-      //   });
-      // });
       dispatch(setActiveUsers(activeUsers));
     }
   });
 
   return (
     <div className="mb-12 flex  flex-col justify-center gap-2 py-10 sm:flex-row h-screen">
-      <section className="h-full md:h-5/6 flex flex-col w-full md:w-1/3">
+      <section className={userDivClasse}>
         <GenderFilter />
         <div className="flex flex-row h-full">
           <Sidebar />
@@ -70,7 +75,7 @@ export function ChatLayoutPage() {
           <ActiveUsers />
         </div>
       </section>
-      <section className="bg-purple-100 hidden sm:block w-full rounded-xl text-black h-full">
+      <section className={outletDivClasses}>
         {/* <ChatWindowLayout /> */}
         <Outlet></Outlet>
       </section>

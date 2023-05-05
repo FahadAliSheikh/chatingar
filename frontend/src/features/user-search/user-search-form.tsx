@@ -3,6 +3,7 @@ import { userApi } from "@/store/api/userApi";
 import { useDispatch } from "react-redux";
 import { setActiveUsers } from "@/store/slices/userSlice";
 import { countries } from "@constants/countries";
+import { BackToUserBtn } from "../chat";
 
 interface User {
   name: string;
@@ -52,9 +53,15 @@ export function UserSearchForm() {
 
   return (
     <>
-      <h2 className="mt-6 text-center text-2xl font-bold text-black">
-        Search for Users to chat!
-      </h2>
+      <div>
+        <BackToUserBtn />
+      </div>
+      <div>
+        <h2 className="mt-6 text-center text-2xl font-bold text-black">
+          Search for Users to chat!
+        </h2>
+      </div>
+
       <form
         onSubmit={handleSubmit}
         className="max-w-md mx-auto shadow-lg p-10 shadow-purple-200"

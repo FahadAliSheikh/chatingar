@@ -1,25 +1,32 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-export type ComponentType = "UserSearchForm" | "Inbox" | "ChatBox";
+// export type ComponentType = "UserSearchForm" | "Inbox" | "ChatBox";
 
-interface DisplayState {
-  displayedComponent: ComponentType;
-}
+// interface DisplayState {
+//   displayedComponent: ComponentType;
+// }
 
-const initialState: DisplayState = {
-  displayedComponent: "UserSearchForm",
+const initialState: any = {
+  userDiveClasses: [
+    "h-full md:h-5/6 flex flex-col w-full md:w-3/5",
+    "bg-purple-100 sm:block w-full rounded-xl text-black h-full",
+  ],
 };
 
-export const displaySlice = createSlice({
+export const displaySlice: any = createSlice({
   name: "display",
   initialState,
   reducers: {
-    setDisplayedComponent: (state, action: PayloadAction<ComponentType>) => {
-      state.displayedComponent = action.payload;
+    setDisplayedClasses: (state, action: PayloadAction<any>) => {
+      console.log("inside state change");
+      console.log(action.payload);
+      state.userDiveClasses = action.payload;
     },
   },
 });
 
-export const { setDisplayedComponent } = displaySlice.actions;
-
+export const { setDisplayedClasses } = displaySlice.actions;
+export const getDispalyClasses = (state: RootState) =>
+  state.display.userDiveClasses;
 export default displaySlice.reducer;

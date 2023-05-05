@@ -1,3 +1,10 @@
+import { BackToUserBtn } from "./back-to-user-btn";
+
 export function Inbox() {
-  return <div>inbox</div>;
+  return (
+    <div>
+      <BackToUserBtn />
+      inbox
+    </div>
+  );
 }
