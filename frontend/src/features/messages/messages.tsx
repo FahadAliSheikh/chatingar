@@ -8,18 +8,20 @@ import { getSocket } from "@/socket";
 
 export function Messages({ messagesData }: any) {
   console.log("MESSAGES COMPONENT=>");
+  const inputRef = useRef<HTMLInputElement>(null);
+
   let socket = getSocket();
   const [sendMessage, { data: sentMessageData, isError, error }] =
     useSendMessageMutation();
 
   const [messages, setMessages]: any = useState([]);
   // const [arrivalMessages, setArrivalMessages]: any = useState(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Scroll to the bottom of the messages component
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    inputRef.current?.focus();
   }, [messages]);
 
   useEffect(() => {
@@ -55,11 +57,15 @@ export function Messages({ messagesData }: any) {
   const selectedChat = useSelector(getSelectedChat);
 
   const handleSendMessage = async (event: any) => {
-    event.preventDefault();
+    // event.preventDefault();
+    console.log("inside handle message");
+    console.log(event);
     console.log(inputRef?.current?.value);
 
     const newMessage = inputRef?.current?.value;
     if ((event.type === "click" || event.key === "Enter") && newMessage) {
+      inputRef.current.value = null;
+
       sendMessage({
         chatId: selectedChat?._id,
         content: newMessage,
@@ -68,7 +74,6 @@ export function Messages({ messagesData }: any) {
         .then((data) => {
           console.log("new Message data", data);
           socket.emit("new message", data);
-          inputRef.current.value = null;
           // setMessages([...messages, data]);
         });
     }
@@ -113,7 +118,7 @@ export function Messages({ messagesData }: any) {
           // onChange={typingHandler}
           // value={newMessage}
           ref={inputRef}
-          // onKeyDown={handleSendMessage}
+          onKeyDown={handleSendMessage}
         />
         <button onClick={handleSendMessage}>
           <svg
