@@ -1,13 +1,17 @@
 import { useDispatch } from "react-redux";
 import { setDisplayedComponent } from "@/store/slices/displaySliceOld";
 import { setDisplayedClasses } from "@/store/slices/displaySlice";
-
+import { countries } from "@/constants/countries";
 import { setSelectedUser } from "@slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export function SingleActiveUser({ user }: any) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log("SINGLE USER COMPONENT=>");
+  const countryName = countries.find(
+    (country) => country.code === user?.country
+  );
 
   const handleClick = async (user: any) => {
     dispatch(setSelectedUser(user));
@@ -36,7 +40,7 @@ export function SingleActiveUser({ user }: any) {
           {user?.name}
         </p>
         <p className="text-sm text-gray-800 truncate dark:text-gray-800">
-          {user?.gender}, {user?.age}, {user?.country}
+          {user?.gender}, {user?.age}, {countryName?.name}
         </p>
       </div>
     </div>
