@@ -7,7 +7,7 @@ const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const userController = require("./controllers/userControllers");
 const chatController = require("./controllers/chatControllers");
-messageRoutes;
+const cors = require("cors");
 
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 const app = express();
@@ -16,18 +16,27 @@ connectDB();
 
 app.use(express.json());
 // Enable CORS
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  next();
-});
+app.use(cors());
+app.use(
+  cors({
+    origin: "http://192.168.18.15:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Methods",
+//     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+//   );
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );
+//   next();
+// });
 
 app.get("/", (req, res) => {
   res.send("API is running!");
@@ -46,9 +55,14 @@ const server = app.listen(PORT, console.log(`Server started on port ${PORT}`));
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5173",
+    // origin: "http://192.168.18.15:5173",
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
   },
 });
+// const io = new socket.Server(server, { cors: { origin: "*" } });
 
 let users = [];
 

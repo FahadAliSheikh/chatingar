@@ -1,7 +1,8 @@
 import { io, Socket } from "socket.io-client";
 import { useMemo } from "react";
 
-const SOCKET_URL = "http://localhost:5000";
+// const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = "http://192.168.18.15:5000";
 
 let socket: Socket;
 

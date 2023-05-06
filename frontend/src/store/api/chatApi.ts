@@ -8,7 +8,7 @@ import { RootState } from "../store";
 export const chatApi = createApi({
   reducerPath: "chatApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    baseUrl: "http://192.168.18.15:5000",
     prepareHeaders: (headers, { getState }) => {
       const user = (getState() as RootState).auth.user;
       if (user) {
