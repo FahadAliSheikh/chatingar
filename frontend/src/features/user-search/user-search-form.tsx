@@ -20,7 +20,7 @@ export function UserSearchForm() {
 
   const [user, setUser] = useState<User>({
     name: "",
-    gender: "male",
+    gender: "female",
     country: "",
   });
 
@@ -105,21 +105,8 @@ export function UserSearchForm() {
             Gender
           </label>
           <div>
-            <label
-              htmlFor="male"
-              className="inline-flex items-center mr-4 gap-4"
-            >
-              <input
-                id="male"
-                name="gender"
-                type="radio"
-                value="male"
-                checked={user.gender === "male"}
-                onChange={handleGenderChange}
-                className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500"
-              />
-              <span>Male</span>
-            </label>
+            <span className="mr-2">Female</span>
+
             <label htmlFor="female" className="inline-flex items-center">
               <input
                 id="female"
@@ -131,7 +118,22 @@ export function UserSearchForm() {
                 // className="form-radio"
                 className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500"
               />
-              <span className="ml-2">Female</span>
+            </label>
+            <label
+              htmlFor="male"
+              className="inline-flex items-center mr-2 gap-4"
+            >
+              <span className="ml-5">Male</span>
+
+              <input
+                id="male"
+                name="gender"
+                type="radio"
+                value="male"
+                checked={user.gender === "male"}
+                onChange={handleGenderChange}
+                className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500"
+              />
             </label>
           </div>
         </div>
@@ -162,7 +164,8 @@ export function UserSearchForm() {
         <div className="mb-4">
           <button
             type="submit"
-            className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded hover:bg-purple-500 focus:outline-none focus:shadow-outline-purple active:bg-purple-500"
+            className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded focus:outline-none focus:shadow-outline-purple active:bg-purple-500 hover:bg-purple-600"
+            disabled={isLoading}
           >
             Search
           </button>

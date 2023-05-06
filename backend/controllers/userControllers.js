@@ -71,7 +71,7 @@ const allUsers = asyncHandler(async (req, res) => {
   let gender = req.query.gender;
   let country = req.query.country;
   let searchObje = {
-    isActive: true,
+    // isActive: true,
   };
   if (req.query.name) {
     searchObje.name = { $regex: req.query.name, $options: "i" };

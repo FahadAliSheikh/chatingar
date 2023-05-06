@@ -25,13 +25,16 @@ export function SingleActiveUser({ user }: any) {
   };
   return (
     <div
-      className="flex w-full py-4 bg-pink-300 border border-white-800"
+      className={`flex w-full py-4 border border-white-800 hover:cursor-pointer ${
+        user?.gender === "male" ? "bg-purple-300" : "bg-pink-300"
+      }`}
       onClick={() => handleClick(user)}
     >
       <div className="flex-shrink-0">
         <img
-          className="w-8 h-8 rounded-full"
-          src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+          className="w-10 h-10 rounded-full"
+          // src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+          src={`/icons/${user?.gender}.png`}
           alt="Neil image"
         />
       </div>

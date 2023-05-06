@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import uuid from "react-uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,6 +25,11 @@ export function LoginWOR() {
   // countries.unshift();
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
   const [signupWOM, { data, isLoading, error, isError, isSuccess }] =
     useSignupWOMMutation();
 
@@ -111,6 +116,7 @@ export function LoginWOR() {
             className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
             required
             placeholder="Select a unique username!"
+            ref={inputRef}
           />
         </div>
         <div className="flex">

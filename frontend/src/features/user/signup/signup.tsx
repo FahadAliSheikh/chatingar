@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -60,6 +60,11 @@ export function Signup() {
     event.preventDefault();
     const userData = await signupUser({ ...user }).unwrap();
   };
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -106,6 +111,7 @@ export function Signup() {
             className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
             required
             placeholder="Select a unique username"
+            ref={inputRef}
           />
         </div>
         <div className="mb-4">
@@ -222,7 +228,7 @@ export function Signup() {
         <div className="mb-4">
           <button
             type="submit"
-            className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded hover:bg-purple-500 focus:outline-none focus:shadow-outline-purple active:bg-purple-500"
+            className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded hover:bg-purple-600 focus:outline-none focus:shadow-outline-purple active:bg-purple-500"
           >
             Start chatting now!
           </button>

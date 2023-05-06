@@ -29,13 +29,18 @@ export function ChatHeader({ selectedUser }: any) {
   }
   if (selectedUser) {
     content = (
-      <div className=" flex items-center  p-3 border-b border-gray-300">
+      <div
+        className={`flex items-center  p-3 border-b border-gray-300 rounded-lg bg-pink-300 ${
+          selectedUser?.gender === "male" ? "bg-purple-300" : "bg-pink-300"
+        }`}
+      >
         <div className="flex items-center space-x-4">
           <BackToUserBtn />
           <div className="flex-shrink-0">
             <img
               className="w-8 h-8 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+              // src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+              src={`/icons/${selectedUser?.gender}.png`}
               alt="Neil image"
             />
           </div>
