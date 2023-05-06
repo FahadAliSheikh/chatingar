@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema(
     age: { type: "Number", require: true },
     country: { type: "String", required: true },
     hasEmail: { type: "Boolean", required: true },
+    isActive: { type: "Boolean", required: true, default: false },
 
     pic: {
       type: "String",

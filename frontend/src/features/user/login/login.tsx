@@ -9,12 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSigninUserMutation } from "@/store/api/authApi";
 import { setCredentials, selectCurrentUser } from "@/store/slices/authSlice";
+import { getSocket } from "@/socket";
 
 interface LoginState {
   email: string;
   password: string;
 }
 export function Login() {
+  const socket = getSocket();
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const [signinUser, { data, isLoading, error, isError, isSuccess }] =
@@ -44,6 +46,7 @@ export function Login() {
       toast.success("Logged in successfully");
       // setOpenPostModal(false);
       dispatch(setCredentials(data));
+      socket.emit("setUp", data);
       navigate("/chat");
     }
 

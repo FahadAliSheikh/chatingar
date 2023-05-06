@@ -10,57 +10,57 @@ import { getSocket } from "@/socket";
 import { getDispalyClasses } from "@/store/slices/displaySlice";
 
 export function ChatLayoutPage() {
+  console.log("CHAT PAGE =>");
+
   const currentUser = useSelector(selectCurrentUser);
   const displayClasses = useSelector(getDispalyClasses);
-  // const displayClasses = useSelector(
-  //   (state: any) => state.display.userDiveClasses
-  // );
-  console.log("display classes", displayClasses);
+  const [userUpdated, setUserUpdated] = useState([]);
   const [userDivClasse, setUseDivClass] = useState("");
   const [outletDivClasses, setOutletDivClasses] = useState("");
-  useEffect(() => {
-    console.log("insideee eeeeeeeeeeeeeeeeeeee");
-    setUseDivClass(displayClasses[0]);
-    setOutletDivClasses(displayClasses[1]);
-    console.log(userDivClasse);
-    console.log(outletDivClasses);
-  }, [displayClasses]);
-
-  console.log("CHAT PAGE =>");
   const dispatch = useDispatch();
   let socket = getSocket();
-  console.log("socket id in single layout comp", socket.id);
+  const [
+    executeGetActiveUsersQuery,
+    { data: activeUsers = [], isError, error, isLoading, isSuccess },
+  ] = userApi.endpoints.getActiveUsers.useLazyQuery();
+
+  useEffect(() => {
+    setUseDivClass(displayClasses[0]);
+    setOutletDivClasses(displayClasses[1]);
+  }, [displayClasses]);
 
   useEffect(() => {
     console.log("socket emit wala uf -3");
-    socket.on("connected", (user) => {
+    socket.on("connected", () => {
       console.log("getting response after connection");
       socket.emit("setUp", currentUser);
     });
-    console.log(currentUser);
-    // socket.on("getUsers", (userdata) => {
-    //   console.log("user coming from socket", userdata);
-    // });
+
+    // console.log(currentUser);
   });
+  useEffect(() => {
+    socket.on("getUsers", (userdata) => {
+      console.log("user coming from socket", userdata);
+      setUserUpdated(userdata);
+    });
+  });
+
   let searchData = {
     name: "",
     gender: "",
     country: "",
   };
-  const [
-    executeGetActiveUsersQuery,
-    { data: activeUsers = [], isError, error, isLoading, isSuccess },
-  ] = userApi.endpoints.getActiveUsers.useLazyQuery();
-  let newActiveUsers: any = [];
 
   useEffect(() => {
     console.log("UF-1");
     executeGetActiveUsersQuery(searchData);
-  }, []);
+  }, [userUpdated]);
+
   useEffect(() => {
     console.log("UF-2");
 
     if (isSuccess) {
+      console.log(activeUsers);
       dispatch(setActiveUsers(activeUsers));
     }
   });

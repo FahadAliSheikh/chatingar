@@ -39,6 +39,13 @@ const registerUser = asyncHandler(async (req, res) => {
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
+  console.log(req.body);
+  console.log(user);
+  if (!user) {
+    throw new Error("Invalid email or password!");
+  }
+  const matchpsd = await user.matchPassword(password);
+  console.log(matchpsd);
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
@@ -60,11 +67,12 @@ const authUser = asyncHandler(async (req, res) => {
 const allUsers = asyncHandler(async (req, res) => {
   // const keyword = req.query.search;
   // console.log(keyword);
-  console.log(req.query);
   let name = req.query.name;
   let gender = req.query.gender;
   let country = req.query.country;
-  let searchObje = {};
+  let searchObje = {
+    isActive: true,
+  };
   if (req.query.name) {
     searchObje.name = { $regex: req.query.name, $options: "i" };
   }
@@ -91,7 +99,6 @@ const allUsers = asyncHandler(async (req, res) => {
 });
 
 const registerWOEmail = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const { name, password, gender, age, country } = req.body;
   if (!name || !gender || !age || !country) {
     res.status(400);
@@ -123,10 +130,23 @@ const registerWOEmail = asyncHandler(async (req, res) => {
     throw new Error("Failed to create new user!");
   }
 });
+const updateActiveStatue = asyncHandler(async (userId, status) => {
+  try {
+    const foundUser = await User.findByIdAndUpdate(userId, {
+      isActive: status,
+    });
+    if (foundUser) {
+      console.log("user updated", foundUser.isActive);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 module.exports = {
   registerUser,
   registerWOEmail,
   authUser,
   allUsers,
+  updateActiveStatue,
 };

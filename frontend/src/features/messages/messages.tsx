@@ -64,7 +64,7 @@ export function Messages({ messagesData }: any) {
 
     const newMessage = inputRef?.current?.value;
     if ((event.type === "click" || event.key === "Enter") && newMessage) {
-      inputRef.current.value = null;
+      inputRef.current.value = "";
 
       sendMessage({
         chatId: selectedChat?._id,

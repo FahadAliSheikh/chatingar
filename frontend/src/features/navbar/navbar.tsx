@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Routes } from "@config/routes";
-// import { useSocket } from "@socket/get-socket";
+import { getSocket } from "@socket/get-socket";
 import { User } from "@interfaces/user";
 // redux login
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,11 +16,10 @@ function classNames(...classes: any) {
 
 export function Navbar() {
   console.log("inside navbar");
+  let socket = getSocket();
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
-
-  // const socket = useSocket();
 
   const [navbar, setNavbar] = useState(false);
   const signUpHandler = (
@@ -42,6 +41,8 @@ export function Navbar() {
   ) => {
     event.preventDefault();
     dispatch(logout());
+    socket.emit("removeUser", user);
+
     navigate("/signin");
   };
   return (

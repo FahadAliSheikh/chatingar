@@ -5,7 +5,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
-
+const userController = require("./controllers/userControllers");
 messageRoutes;
 
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
@@ -64,6 +64,10 @@ const getUser = (userId) => {
   return users.find((user) => user.userId === userId);
 };
 
+const getUserBySocket = (socketId) => {
+  return users.find((user) => user.socketId === socketId);
+};
+
 io.on("connection", (socket) => {
   //when ceonnect
   console.log("a user connected:", socket.id);
@@ -72,10 +76,19 @@ io.on("connection", (socket) => {
   socket.on("setUp", (user) => {
     console.log("inside setup");
     addUser(user._id, socket.id);
+    userController.updateActiveStatue(user._id, true);
     console.log(users);
     io.emit("getUsers", users);
   });
 
+  socket.on("removeUser", (user) => {
+    console.log("inside remove user");
+    removeUser(socket.id);
+    console.log(users);
+    userController.updateActiveStatue(user._id, false);
+
+    io.emit("getUsers", users);
+  });
   //send and get message
   socket.on("new message", (newMessageReceived) => {
     console.log(newMessageReceived);
@@ -101,6 +114,11 @@ io.on("connection", (socket) => {
   //when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
+    const user = getUserBySocket(socket.id);
+    console.log("found disconnected user", user);
+    if (user) {
+      userController.updateActiveStatue(user.userId, false);
+    }
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
