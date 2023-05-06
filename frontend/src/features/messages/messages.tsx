@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { FaRegPaperPlane } from "react-icons/fa";
+
 import { isSentByMe } from "@config/chatLogics";
 import { selectCurrentUser } from "@store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -120,15 +122,21 @@ export function Messages({ messagesData }: any) {
           ref={inputRef}
           onKeyDown={handleSendMessage}
         />
-        <button onClick={handleSendMessage}>
-          <svg
+
+        <button
+          onClick={handleSendMessage}
+          className="bg-purple-500 flex flex-row gap-2 rounded-md hover:text-gray-400 my-4 p-2 text-white"
+        >
+          Send
+          {/* <FaRegPaperPlane size={20} /> */}
+          {/* <svg
             className="w-5 h-5 text-gray-500 origin-center transform rotate-90"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-          </svg>
+          </svg> */}
         </button>
       </div>
     </>
