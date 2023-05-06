@@ -7,7 +7,7 @@ export function Sidebar() {
   const handleClick = () => {
     dispatch(
       setDisplayedClasses([
-        "h-full md:h-5/6 flex flex-col w-full md:w-3/5 hidden md:block lg:block",
+        "h-full lg:h-5/6 flex flex-col w-full lg:w-3/5 hidden lg:block",
         "bg-purple-100 sm:block w-full rounded-xl text-black h-full",
       ])
     );

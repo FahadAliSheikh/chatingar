@@ -8,7 +8,7 @@ export function Layout() {
   return (
     <>
       <Navbar />
-      <main className=" w-full md:px-20 lg:px-40">
+      <main className=" w-full  lg:px-40">
         <Outlet />
       </main>
       <Footer />
