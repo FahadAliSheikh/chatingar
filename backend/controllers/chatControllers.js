@@ -12,6 +12,7 @@ const accessChat = asyncHandler(async (req, res) => {
     $and: [
       { users: { $elemMatch: { $eq: req.user._id } } },
       { users: { $elemMatch: { $eq: userId } } },
+      { isActive: true },
     ],
   })
     .populate("users", "-password")
@@ -153,6 +154,23 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     res.json(removed);
   }
 });
+const updateActiveStatue = asyncHandler(async (userId, status) => {
+  try {
+    let foundChats = await Chat.updateMany(
+      {
+        isGroupChat: false,
+        $and: [{ users: { $elemMatch: { $eq: userId } } }, { isActive: true }],
+      },
+      { isActive: false }
+    );
+    // if (foundChats) {
+    //   // foundChats.forEach;
+    //   console.log("user updated", foundUser.isActive);
+    // }
+  } catch (e) {
+    console.log(e);
+  }
+});
 module.exports = {
   accessChat,
   fetchChats,
@@ -160,4 +178,5 @@ module.exports = {
   renameGroup,
   addToGroup,
   removeFromGroup,
+  updateActiveStatue,
 };

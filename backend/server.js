@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const userController = require("./controllers/userControllers");
+const chatController = require("./controllers/chatControllers");
 messageRoutes;
 
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
@@ -86,6 +87,7 @@ io.on("connection", (socket) => {
     removeUser(socket.id);
     console.log(users);
     userController.updateActiveStatue(user._id, false);
+    chatController.updateActiveStatue(user._id, false);
 
     io.emit("getUsers", users);
   });
@@ -113,6 +115,7 @@ io.on("connection", (socket) => {
 
   //when disconnect
   socket.on("disconnect", () => {
+    console.log("------------refresing user-----------");
     console.log("a user disconnected!");
     const user = getUserBySocket(socket.id);
     console.log("found disconnected user", user);
