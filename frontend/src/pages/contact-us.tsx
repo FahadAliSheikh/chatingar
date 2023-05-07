@@ -1,52 +1,25 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-// import { useSocket } from "@socket/get-socket";
-// redux login
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-interface ContactState {
-  name: string;
-  email: string;
-  message: string;
-}
 export function ContactUs() {
-  let navigate = useNavigate();
-
-  const [contact, setContact] = useState<ContactState>({
-    email: "",
-    name: "",
-    message: "",
-  });
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setContact({ ...contact, name: event.target.value });
+  const {
+    register,
+    trigger,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (e: any) => {
+    const isValid = await trigger();
+    if (!isValid) {
+      e.preventDefault();
+    }
   };
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setContact({ ...contact, email: event.target.value });
-  };
-
-  const handleMessageChange = (event: any) => {
-    console.log(event);
-    setContact({ ...contact, message: event.target.value });
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("contact", contact);
-    // signinUser({ ...contact });
-  };
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
-
   return (
     <div className="my-30">
       <form
-        onSubmit={handleSubmit}
         className="max-w-md mx-auto shadow-lg p-10 shadow-purple-200"
+        target="_blank"
+        onSubmit={onSubmit}
+        action="https://formsubmit.co/476fa689f5916b8beeb0e65e917f4e84"
+        method="POST"
       >
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2 font-bold text-gray-700">
@@ -54,15 +27,22 @@ export function ContactUs() {
           </label>
           <input
             id="name"
-            name="name"
             type="name"
-            value={contact.name}
-            onChange={handleNameChange}
             className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
             required
             placeholder="Enter your name"
-            ref={inputRef}
+            {...register("name", {
+              required: true,
+              maxLength: 100,
+            })}
           />
+          {errors.name && (
+            <p className="text-red mt-1 ">
+              {errors.name.type === "required" && "This field is required!"}
+              {errors.name.type === "maxLength" &&
+                "Max length is 100 characters!"}
+            </p>
+          )}
         </div>
         <div className="mb-4">
           <label htmlFor="email" className="block mb-2 font-bold text-gray-700">
@@ -70,14 +50,21 @@ export function ContactUs() {
           </label>
           <input
             id="email"
-            name="email"
             type="text"
-            value={contact.email}
-            onChange={handleEmailChange}
             className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
             required
             placeholder="Enter your email"
+            {...register("email", {
+              required: true,
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            })}
           />
+          {errors.email && (
+            <p className="text-red mt-1 ">
+              {errors.email.type === "required" && "This field is required!"}
+              {errors.email.type === "pattern" && "Invalid email address!"}
+            </p>
+          )}
         </div>
         <div className="mb-4">
           <label
@@ -88,13 +75,21 @@ export function ContactUs() {
           </label>
           <textarea
             id="message"
-            name="message"
-            value={contact.message}
-            onChange={handleMessageChange}
             className="h-44 rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
             required
             placeholder="Type your message here"
+            {...register("message", {
+              required: true,
+              maxLength: 100,
+            })}
           />
+          {errors.message && (
+            <p className="text-red mt-1 ">
+              {errors.message.type === "required" && "This field is required!"}
+              {errors.message.type === "maxLength" &&
+                "Max length is 2000 characters!"}
+            </p>
+          )}
         </div>
         <div className="mb-4">
           <button
