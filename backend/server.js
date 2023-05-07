@@ -19,7 +19,8 @@ app.use(express.json());
 app.use(cors());
 app.use(
   cors({
-    origin: "http://192.168.18.15:5173",
+    origin: "*",
+    // origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

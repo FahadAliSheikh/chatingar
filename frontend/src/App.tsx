@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useState, useEffect, useRef } from "react";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignupPage from "@/pages/signup";
 import LoginPage from "@pages/login";
@@ -11,6 +10,7 @@ import { Layout } from "@features/layout";
 import { ChatLayoutPage } from "@pages/chat";
 import RequireAuth from "@store/slices/RequireAuth";
 import { ChatBox, Inbox } from "@features/chat";
+import { ContactUs } from "./pages/contact-us";
 // import socketIO from "socket.io-client";
 // import { io } from "socket.io-client";
 
@@ -29,6 +29,7 @@ function App() {
 
           <Route path="/signin" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/contact" element={<ContactUs />} />
           <Route element={<RequireAuth />}>
             <Route path="/chat" element={<ChatLayoutPage />}>
               <Route path="search" element={<UserSearchForm />} />

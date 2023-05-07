@@ -8,7 +8,7 @@ import { RootState } from "../store";
 export const chatApi = createApi({
   reducerPath: "chatApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://192.168.18.15:5000",
+    baseUrl: import.meta.env.VITE_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const user = (getState() as RootState).auth.user;
       if (user) {

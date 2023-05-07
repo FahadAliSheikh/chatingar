@@ -75,53 +75,58 @@ export function Login() {
     <>
       {error ? <ToastContainer /> : null}
 
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-md mx-auto shadow-lg p-10 shadow-purple-200"
-      >
-        <div className="mb-4">
-          <label htmlFor="email" className="block mb-2 font-bold text-gray-700">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="text"
-            value={user.email}
-            onChange={handleEmailChange}
-            className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
-            required
-            placeholder="Enter your registered email!"
-            ref={inputRef}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block mb-2 font-bold text-gray-700"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={user.password}
-            onChange={handlePasswordChange}
-            className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
-            required
-            placeholder="Enter your password!!"
-          />
-        </div>
-        <div className="mb-4">
-          <button
-            type="submit"
-            className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded hover:bg-purple-600 focus:outline-none focus:shadow-outline-purple active:bg-purple-500"
-          >
-            Start chatting now!
-          </button>
-        </div>
-      </form>
+      <section className="  lg:1/2 self-center lg:m-20">
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-md mx-auto shadow-lg p-10 shadow-purple-200"
+        >
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block mb-2 font-bold text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="text"
+              value={user.email}
+              onChange={handleEmailChange}
+              className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
+              required
+              placeholder="Enter your registered email!"
+              ref={inputRef}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block mb-2 font-bold text-gray-700"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={user.password}
+              onChange={handlePasswordChange}
+              className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
+              required
+              placeholder="Enter your password!!"
+            />
+          </div>
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded hover:bg-purple-600 focus:outline-none focus:shadow-outline-purple active:bg-purple-500"
+            >
+              Start chatting now!
+            </button>
+          </div>
+        </form>
+      </section>
     </>
   );
 }

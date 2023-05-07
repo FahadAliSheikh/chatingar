@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { store, persistor } from "@store/store";
 // import { SocketProvider } from "../src/context/SocketContext";
 import { PersistGate } from "redux-persist/integration/react";
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
   <BrowserRouter>

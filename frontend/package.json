@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.0.17",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
     "emoji-mart": "^5.5.2",
     "heroicons": "^2.0.17",
     "react": "^18.2.0",

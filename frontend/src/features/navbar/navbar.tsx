@@ -110,7 +110,7 @@ export function Navbar() {
                 <a href="#">About US</a>
               </li>
               <li className="text-white hover:text-indigo-200">
-                <a href="#">Contact US</a>
+                <a href="/contact">Contact US</a>
               </li>
 
               <>
