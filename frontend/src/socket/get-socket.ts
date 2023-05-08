@@ -8,6 +8,10 @@ const SOCKET_URL =
 console.log(SOCKET_URL);
 let socket: Socket;
 
+export const onReceiveMessage = (callback: any) => {
+  socket.on("message received", callback);
+};
+
 export const getSocket = () => {
   if (!socket) {
     socket = io(SOCKET_URL);
@@ -15,6 +19,7 @@ export const getSocket = () => {
 
   return socket;
 };
+
 export const useSocket = () => {
   const socket = useMemo(() => getSocket(), []);
 

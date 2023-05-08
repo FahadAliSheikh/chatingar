@@ -16,6 +16,7 @@ import { userApi } from "./api/userApi";
 import { chatApi } from "./api/chatApi";
 
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
+import notificationSlice from "./slices/notificationSlice";
 // const rootPersistConfig = {
 //   key: "root",
 //   storage,
@@ -32,6 +33,7 @@ const rootReducer: any = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   user: userReducer,
   chat: chatReducer,
+  notification: notificationSlice,
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [chatApi.reducerPath]: chatApi.reducer,

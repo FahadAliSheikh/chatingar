@@ -4,7 +4,11 @@ import { GenderFilter } from "@/features/user-search";
 import { Outlet } from "react-router-dom";
 import { userApi } from "@/store/api/userApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveUsers } from "@slices/userSlice";
+import {
+  setActiveUsers,
+  getActiveUsers,
+  setSelectedUser,
+} from "@slices/userSlice";
 import { selectCurrentUser } from "@slices/authSlice";
 import { getSocket } from "@/socket";
 import { getDispalyClasses } from "@/store/slices/displaySlice";
@@ -62,6 +66,11 @@ export function ChatLayoutPage() {
     if (isSuccess) {
       console.log(activeUsers);
       dispatch(setActiveUsers(activeUsers));
+      // console.log("length greater than0", activeUsers.length);
+
+      // if (activeUsers.length > 0) {
+      // dispatch(setSelectedUser(activeUsers[0]));
+      // }
     }
   });
 
@@ -71,8 +80,8 @@ export function ChatLayoutPage() {
         <GenderFilter />
         <div className="flex flex-row h-full">
           <Sidebar />
-
-          <ActiveUsers />
+          <ActiveUsers flag="usersList" />
+          {/* {isSuccess && <ActiveUsers />} */}
         </div>
       </section>
       <section className={outletDivClasses}>

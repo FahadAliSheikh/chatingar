@@ -7,13 +7,22 @@ import { selectCurrentUser } from "@store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useSendMessageMutation } from "@/store/api/chatApi";
 import { getSelectedChat } from "@slices/chatSlice";
-import { getSocket } from "@/socket";
+import { getSelectedUser } from "@slices/userSlice";
+import {
+  getNotification,
+  addNotification,
+  addToInbox,
+  getInbox,
+} from "@/store/slices/notificationSlice";
+
+import { getSocket, onReceiveMessage } from "@/socket";
 // import { Picker } from "emoji-mart/react";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 
 export function Messages({ messagesData }: any) {
   console.log("MESSAGES COMPONENT=>");
+  const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleEmojiSelect = (emoji: any) => {
@@ -37,22 +46,40 @@ export function Messages({ messagesData }: any) {
     inputRef.current?.focus();
   }, [messages]);
 
+  // useEffect(() => {
+  //   onReceiveMessage((data: any) => {
+  //     console.log("received message:", data);
+  //     // handle received message
+  //   });
+  // }, []);
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       console.log("new message received", newMessageReceived);
       // setArrivalMessages(newMessageReceived);
       console.log(newMessageReceived);
+      // if (
+      //   newMessageReceived &&
+      //   selectedChat?.users.some(
+      //     (user: any) => user._id === newMessageReceived?.sender._id
+      //   )
+      // )
+      // {
       if (
-        newMessageReceived &&
-        selectedChat?.users.some(
-          (user: any) => user._id === newMessageReceived?.sender._id
-        )
+        (newMessageReceived &&
+          currentUser._id === newMessageReceived.sender._id) ||
+        selectedUser?._id === newMessageReceived.sender._id
       ) {
+        console.log(currentUser._id);
+        console.log(selectedUser._id);
+        console.log(newMessageReceived.sender._id);
         console.log("isko display krna hai!");
         setMessages([...messages, newMessageReceived]);
+        console.log(messages.length);
       } else {
         // display notification here
         console.log("notification");
+        dispatch(addNotification());
+        dispatch(addToInbox(newMessageReceived));
       }
 
       // console.log(messages);
@@ -66,14 +93,13 @@ export function Messages({ messagesData }: any) {
     }
   }, [messagesData]);
 
-  const selectedUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUser);
   const selectedChat = useSelector(getSelectedChat);
+  const selectedUser = useSelector(getSelectedUser);
+  const currentInbox = useSelector(getInbox);
 
   const handleSendMessage = async (event: any) => {
     // event.preventDefault();
-    console.log("inside handle message");
-    console.log(event);
-    console.log(inputRef?.current?.value);
     setIsPickerVisible(false);
     const newMessage = inputRef?.current?.value;
     if ((event.type === "click" || event.key === "Enter") && newMessage) {
@@ -87,8 +113,8 @@ export function Messages({ messagesData }: any) {
         .unwrap()
         .then((data: any) => {
           console.log("new Message data", data);
-          socket.emit("new message", data);
           // setMessages([...messages, data]);
+          socket.emit("new message", data);
         });
     }
   };
@@ -98,19 +124,19 @@ export function Messages({ messagesData }: any) {
       <div className="flex flex-col flex-grow h-0 p-4 overflow-auto">
         <div className="flex flex-col h-full">
           {messages &&
-            selectedUser &&
+            currentUser &&
             messages.map((m: any, i: any) => (
               <div
                 key={i}
                 className={`flex ${
-                  isSentByMe(messages, m, i, selectedUser?._id)
+                  isSentByMe(messages, m, i, currentUser?._id)
                     ? "justify-end"
                     : "justify-start"
                 } mb-4`}
               >
                 <div
                   className={`max-w-md py-2 px-4 ${
-                    isSentByMe(messages, m, i, selectedUser?._id)
+                    isSentByMe(messages, m, i, currentUser?._id)
                       ? "bg-blue-500 text-white rounded-br-md rounded-tl-md rounded-tr-md"
                       : "bg-gray-100 text-gray-700 rounded-bl-md rounded-tl-md rounded-tr-md"
                   }`}

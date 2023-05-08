@@ -1,10 +1,17 @@
 import { SingleActiveUser } from "./single-active-user";
 import { useSelector } from "react-redux";
 import { getActiveUsers } from "@slices/userSlice";
+import { getInbox } from "@/store/slices/notificationSlice";
 
-export function ActiveUsers() {
+export function ActiveUsers({ flag }: any) {
+  // export function ActiveUsers() {
   console.log("ACTIVE USERS COMPONENT=>");
-  const activeUsers = useSelector(getActiveUsers);
+  let activeUsers = [];
+  if (flag === "usersList") {
+    activeUsers = useSelector(getActiveUsers);
+  } else if (flag === "inbox") {
+    activeUsers = useSelector(getInbox);
+  }
 
   return (
     <div className="flex flex-col flex-grow overflow-auto">

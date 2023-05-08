@@ -3,6 +3,7 @@ import { setDisplayedComponent } from "@/store/slices/displaySliceOld";
 import { setDisplayedClasses } from "@/store/slices/displaySlice";
 import { countries } from "@/constants/countries";
 import { setSelectedUser } from "@slices/userSlice";
+import { removeFromInbox } from "@slices/notificationSlice";
 import { useNavigate } from "react-router-dom";
 
 export function SingleActiveUser({ user }: any) {
@@ -15,13 +16,14 @@ export function SingleActiveUser({ user }: any) {
 
   const handleClick = async (user: any) => {
     dispatch(setSelectedUser(user));
+    dispatch(removeFromInbox(user));
     dispatch(
       setDisplayedClasses([
         "h-full lg:h-5/6 flex flex-col w-full lg:w-3/5 hidden md:hidden lg:block",
         "bg-purple-100 sm:block w-full rounded-xl text-black h-full",
       ])
     );
-    navigate("chat-box");
+    navigate("/chat/chat-box", { replace: true });
   };
   return (
     <div
