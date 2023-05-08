@@ -6,6 +6,9 @@ import { User } from "@interfaces/user";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, logout } from "@store/slices/authSlice";
+import { setUserInitialState } from "@store/slices/userSlice";
+import { setNotifInitialState } from "@store/slices/notificationSlice";
+import { setChatInitialState } from "@store/slices/chatSlice";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -41,6 +44,9 @@ export function Navbar() {
   ) => {
     event.preventDefault();
     dispatch(logout());
+    dispatch(setUserInitialState());
+    dispatch(setNotifInitialState());
+    dispatch(setChatInitialState());
     socket.emit("removeUser", user);
 
     navigate("/signin");

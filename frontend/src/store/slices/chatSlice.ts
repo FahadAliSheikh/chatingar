@@ -18,6 +18,8 @@ export const chatSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    setChatInitialState: () => initialState,
+
     setSelectedChat: (
       state,
       // action: PayloadAction<{ name: string; token: string }>
@@ -34,6 +36,7 @@ export const {
   // setChatMessages,
   // setNewMessage,
   removeSelectedChat,
+  setChatInitialState,
 } = chatSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

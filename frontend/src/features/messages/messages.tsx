@@ -39,6 +39,7 @@ export function Messages({ messagesData }: any) {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   // const [arrivalMessages, setArrivalMessages]: any = useState(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  console.log(isPickerVisible);
 
   useEffect(() => {
     // Scroll to the bottom of the messages component
@@ -146,9 +147,9 @@ export function Messages({ messagesData }: any) {
                 <div ref={messagesEndRef} />
               </div>
             ))}
-        </div>
-        <div className={`  ${isPickerVisible ? "block" : "hidden"} `}>
-          <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+          <div className={`  ${isPickerVisible ? "block" : "hidden"} `}>
+            <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+          </div>
         </div>
       </div>
       <div className="flex items-center mt-auto justify-between w-full p-3 border-t border-gray-300 gap-3">

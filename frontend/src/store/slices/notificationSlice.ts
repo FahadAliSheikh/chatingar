@@ -19,6 +19,8 @@ export const notificationSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    setNotifInitialState: () => initialState,
+
     addNotification: (state) => {
       state.counter += 1;
     },
@@ -34,8 +36,12 @@ export const notificationSlice = createSlice({
   },
 });
 
-export const { addNotification, addToInbox, removeFromInbox } =
-  notificationSlice.actions;
+export const {
+  addNotification,
+  addToInbox,
+  removeFromInbox,
+  setNotifInitialState,
+} = notificationSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.auth.value;
