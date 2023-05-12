@@ -15,12 +15,12 @@ export function ActiveUsers({ flag }: any) {
 
   return (
     <div className="flex flex-col flex-grow overflow-auto">
-      {activeUsers ? (
+      {activeUsers && activeUsers.length > 0 ? (
         activeUsers.map((user: any) => (
           <SingleActiveUser key={user._id} user={user} />
         ))
       ) : (
-        <p>No active user so far..</p>
+        <p className=" justify-center text-center">No activity so far..</p>
       )}
     </div>
   );

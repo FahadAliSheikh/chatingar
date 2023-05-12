@@ -38,6 +38,7 @@ export function Messages() {
     }
   };
 
+  // RTK Query to get messages for selected chat
   const [
     sendMessage,
     { data: sentMessageData, isError: isSendMsgErr, error: sendMsgErr },
@@ -48,7 +49,7 @@ export function Messages() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     inputRef.current?.focus();
-  }, [messages]);
+  }, [messages, isPickerVisible]);
 
   useEffect(() => {
     console.log("hook running");
@@ -116,12 +117,12 @@ export function Messages() {
                 >
                   <p>{m.content}</p>
                 </div>
-                <div ref={messagesEndRef} />
               </div>
             ))}
           <div className={`  ${isPickerVisible ? "block" : "hidden"} `}>
             <Picker data={data} onEmojiSelect={handleEmojiSelect} />
           </div>
+          <div ref={messagesEndRef} />
         </div>
       </div>
       <div className="flex items-center mt-auto justify-between w-full p-3 border-t border-gray-300 gap-3">

@@ -31,7 +31,7 @@ export function SingleActiveUser({ user }: any) {
   };
   return (
     <div
-      className={`flex w-full py-4 border border-white-800 hover:cursor-pointer ${
+      className={`flex w-full py-4 border border-white-800 hover:cursor-pointer rounded-md ${
         user?.gender === "male" ? "bg-purple-300" : "bg-pink-300"
       }`}
       onClick={() => handleClick(user)}
