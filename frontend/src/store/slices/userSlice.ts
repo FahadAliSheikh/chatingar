@@ -23,6 +23,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInitialState: () => initialState,
+    removeSelectedUser: (state) => {
+      state.selectedUser = null;
+    },
     setActiveUsers: (
       state,
       // action: PayloadAction<{ name: string; token: string }>
@@ -40,8 +43,12 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUserInitialState, setActiveUsers, setSelectedUser } =
-  userSlice.actions;
+export const {
+  setUserInitialState,
+  setActiveUsers,
+  setSelectedUser,
+  removeSelectedUser,
+} = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.auth.value;

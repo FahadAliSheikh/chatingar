@@ -125,7 +125,7 @@ io.on("connection", (socket) => {
     console.log("sending message to:", user.socketId);
 
     socket.to(user.socketId).emit("message received", newMessageReceived);
-    socket.emit("message received", newMessageReceived);
+    // socket.emit("message received", newMessageReceived);
   });
 
   //when disconnect

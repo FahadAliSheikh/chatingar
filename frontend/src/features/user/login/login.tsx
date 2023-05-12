@@ -52,8 +52,8 @@ export function Login() {
       // setOpenPostModal(false);
       dispatch(setCredentials(data));
       socket.emit("setUp", data);
-      // navigate("/chat/chat-box");
-      navigate("/chat");
+      navigate("/chat/chat-box");
+      // navigate("/chat");
     }
 
     if (isError) {

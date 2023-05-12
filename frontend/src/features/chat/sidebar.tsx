@@ -1,13 +1,16 @@
 import { FaSearch, FaInbox } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { setDisplayedClasses } from "@/store/slices/displaySlice";
-import { removeSelectedChat } from "@slices/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotification, getInbox } from "@/store/slices/notificationSlice";
+//SLICES
+import { setDisplayedClasses } from "@/store/slices/displaySlice";
+import { getSelectedChat, setChatInitialState } from "@slices/chatSlice";
+import { removeSelectedUser } from "@slices/userSlice";
+import { addToInbox, getInbox } from "@/store/slices/notificationSlice";
+import { useEffect } from "react";
+import { getSocket, onReceiveMessage } from "@/socket";
 
 export function Sidebar() {
   const dispatch = useDispatch();
-  const notifCounter = useSelector(getNotification);
   const currentInbox = useSelector(getInbox);
   const handleClick = () => {
     dispatch(
@@ -16,8 +19,26 @@ export function Sidebar() {
         "bg-purple-100 sm:block w-full rounded-xl text-black h-full",
       ])
     );
-    dispatch(removeSelectedChat());
+    dispatch(setChatInitialState());
+    dispatch(removeSelectedUser());
   };
+  let socket = getSocket();
+  let selectedChat = useSelector(getSelectedChat);
+  // this useEffect will handle onreceivemessage socket function if chat layout component hasn't been loaded yet
+  useEffect(() => {
+    console.log("hook running");
+    onReceiveMessage((newMessageReceived: any) => {
+      console.log("inside message received");
+      if (!selectedChat || selectedChat._id != newMessageReceived.chat._id) {
+        dispatch(addToInbox(newMessageReceived));
+      }
+    });
+    // cleanup function to unsubscribe the event listener
+    return () => {
+      socket.off("message received");
+    };
+  }, [selectedChat]);
+
   return (
     <div className="flex flex-col bg-purple-500 text-white justify-left h-full w-20 rounded-bl-xl">
       <button className="hover:text-gray-400 m-4" onClick={handleClick}>

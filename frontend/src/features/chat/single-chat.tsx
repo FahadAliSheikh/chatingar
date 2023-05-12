@@ -1,12 +1,16 @@
 import { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+//COMPONENTS
 import { Messages } from "../messages/messages";
+//API
 import { chatApi } from "@/store/api/chatApi";
-import { getSocket } from "@/socket";
+//SLICES
+import { setMessages } from "@/store/slices/chatSlice";
 
 export function SingleChat({ selectedChat }: any) {
   console.log("single chat component=>");
-  let socket = getSocket();
-  console.log("socket id in single chat comp", socket.id);
+  let dispatch = useDispatch();
+
   let content: any = <p>single chat component loading</p>;
 
   const timestampRef = useRef(Date.now()).current;
@@ -25,7 +29,11 @@ export function SingleChat({ selectedChat }: any) {
       executeGetMessagesQuery({
         chatId: selectedChat?._id,
         sessionId: timestampRef,
-      });
+      })
+        .unwrap()
+        .then((data: any) => {
+          dispatch(setMessages(data));
+        });
     }
   }, [selectedChat]);
 
@@ -36,8 +44,8 @@ export function SingleChat({ selectedChat }: any) {
     content = <p>Some Error occured</p>;
   }
   if (isSuccess && data) {
-    socket.emit("join chat", selectedChat._id);
-    content = <>{data && <Messages messagesData={data} />}</>;
+    // content = <>{data && <Messages messagesData={data} />}</>;
+    content = <>{data && <Messages />}</>;
   }
 
   return content;

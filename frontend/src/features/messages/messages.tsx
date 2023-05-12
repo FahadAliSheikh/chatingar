@@ -1,29 +1,36 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { FaRegPaperPlane } from "react-icons/fa";
 import { FaSmile } from "react-icons/fa";
 
 import { isSentByMe } from "@config/chatLogics";
-import { selectCurrentUser } from "@store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+//APIS
 import { useSendMessageMutation } from "@/store/api/chatApi";
-import { getSelectedChat } from "@slices/chatSlice";
-import { getSelectedUser } from "@slices/userSlice";
-import {
-  getNotification,
-  addNotification,
-  addToInbox,
-  getInbox,
-} from "@/store/slices/notificationSlice";
+//SLICES
+import { selectCurrentUser } from "@store/slices/authSlice";
+import { addMessage, getMessages, getSelectedChat } from "@slices/chatSlice";
+import { addToInbox } from "@/store/slices/notificationSlice";
 
+//SOCKET
 import { getSocket, onReceiveMessage } from "@/socket";
-// import { Picker } from "emoji-mart/react";
+//EMOJI LIBRARY
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 
-export function Messages({ messagesData }: any) {
+// MESSAGE COMPONENT
+export function Messages() {
   console.log("MESSAGES COMPONENT=>");
+  let socket = getSocket();
+
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
+  const selectedChat = useSelector(getSelectedChat);
+  let messages = useSelector(getMessages);
+  const [isPickerVisible, setIsPickerVisible] = useState(false);
+
+  // TEXT INPUT REFERENCE
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // emoji handle function: add emoji in input text
 
   const handleEmojiSelect = (emoji: any) => {
     if (inputRef.current) {
@@ -31,82 +38,46 @@ export function Messages({ messagesData }: any) {
     }
   };
 
-  let socket = getSocket();
-  const [sendMessage, { data: sentMessageData, isError, error }] =
-    useSendMessageMutation();
+  const [
+    sendMessage,
+    { data: sentMessageData, isError: isSendMsgErr, error: sendMsgErr },
+  ] = useSendMessageMutation();
 
-  const [messages, setMessages]: any = useState([]);
-  const [isPickerVisible, setIsPickerVisible] = useState(false);
-  // const [arrivalMessages, setArrivalMessages]: any = useState(null);
+  // Scroll to the bottom of the messages component
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  console.log(isPickerVisible);
-
   useEffect(() => {
-    // Scroll to the bottom of the messages component
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     inputRef.current?.focus();
   }, [messages]);
 
-  // useEffect(() => {
-  //   onReceiveMessage((data: any) => {
-  //     console.log("received message:", data);
-  //     // handle received message
-  //   });
-  // }, []);
   useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
-      console.log("new message received", newMessageReceived);
-      // setArrivalMessages(newMessageReceived);
-      console.log(newMessageReceived);
-      // if (
-      //   newMessageReceived &&
-      //   selectedChat?.users.some(
-      //     (user: any) => user._id === newMessageReceived?.sender._id
-      //   )
-      // )
-      // {
-      if (
-        (newMessageReceived &&
-          currentUser._id === newMessageReceived.sender._id) ||
-        selectedUser?._id === newMessageReceived.sender._id
-      ) {
-        console.log(currentUser._id);
-        console.log(selectedUser._id);
-        console.log(newMessageReceived.sender._id);
-        console.log("isko display krna hai!");
-        setMessages([...messages, newMessageReceived]);
-        console.log(messages.length);
-      } else {
+    console.log("hook running");
+    onReceiveMessage((newMessageReceived: any) => {
+      // handle received message
+      // console.log(
+      //   !selectedChat || selectedChat._id !== newMessageReceived.chat._id
+      // );
+      if (!selectedChat || selectedChat._id != newMessageReceived.chat._id) {
         // display notification here
-        console.log("notification");
-        dispatch(addNotification());
         dispatch(addToInbox(newMessageReceived));
+      } else {
+        console.log("isko display krna hai!");
+        // setMessages([...messages, newMessageReceived]);
+        dispatch(addMessage(newMessageReceived));
       }
-
-      // console.log(messages);
     });
-  }, [messages]);
-
-  useEffect(() => {
-    console.log("messages data wala ue");
-    if (messagesData) {
-      setMessages(messagesData);
-    }
-  }, [messagesData]);
-
-  const currentUser = useSelector(selectCurrentUser);
-  const selectedChat = useSelector(getSelectedChat);
-  const selectedUser = useSelector(getSelectedUser);
-  const currentInbox = useSelector(getInbox);
+    // cleanup function to unsubscribe the event listener
+    return () => {
+      socket.off("message received");
+    };
+  }, [selectedChat]);
 
   const handleSendMessage = async (event: any) => {
-    // event.preventDefault();
+    // close emoji picker
     setIsPickerVisible(false);
     const newMessage = inputRef?.current?.value;
     if ((event.type === "click" || event.key === "Enter") && newMessage) {
       inputRef.current.value = "";
-      // setIsPickerVisible(!isPickerVisible);
-
       sendMessage({
         chatId: selectedChat?._id,
         content: newMessage,
@@ -115,6 +86,7 @@ export function Messages({ messagesData }: any) {
         .then((data: any) => {
           console.log("new Message data", data);
           // setMessages([...messages, data]);
+          dispatch(addMessage(data));
           socket.emit("new message", data);
         });
     }
@@ -122,7 +94,7 @@ export function Messages({ messagesData }: any) {
 
   return (
     <>
-      <div className="flex flex-col flex-grow h-0 p-4 overflow-auto">
+      <div className="flex flex-col flex-grow h-0 p-4 overflow-auto mb-4">
         <div className="flex flex-col h-full">
           {messages &&
             currentUser &&

@@ -1,27 +1,30 @@
+import { useEffect } from "react";
+//COMPONENTS
 import { SingleChat } from "./single-chat";
+import { ChatHeader } from "./chat-header";
+//SLICES
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedUser } from "@slices/userSlice";
 import { setSelectedChat } from "@slices/chatSlice";
-import { useEffect } from "react";
-
+//API
 import { useGetSelectedChatMutation } from "@/store/api/chatApi";
 
-import { ChatHeader } from "./chat-header";
 export function ChatBox() {
   console.log(" CHATBOX component=>");
-  let content: any;
 
   const dispatch = useDispatch();
   const selectedUser = useSelector(getSelectedUser);
 
-  const [getSelectedChat, { data, isLoading, error, isError, isSuccess }] =
+  let content: any;
+
+  const [fetchSelectedChat, { data, isLoading, error, isError, isSuccess }] =
     useGetSelectedChatMutation();
   if (!selectedUser) {
     content = <p>Please Select a user to start chat...</p>;
   }
   useEffect(() => {
     if (selectedUser) {
-      getSelectedChat(selectedUser._id)
+      fetchSelectedChat(selectedUser._id)
         .unwrap()
         .then((data: any) => {
           dispatch(setSelectedChat(data));
@@ -40,6 +43,7 @@ export function ChatBox() {
       <section className="flex h-full flex-col bg-purple-100 border-lg">
         <ChatHeader selectedUser={selectedUser} />
         <SingleChat selectedChat={data} />
+        {/* {<Messages />} */}
       </section>
     );
   }

@@ -1,5 +1,8 @@
 import React from "react";
 import { setDisplayedClasses } from "@/store/slices/displaySlice";
+import { setChatInitialState } from "@slices/chatSlice";
+import { removeSelectedUser } from "@slices/userSlice";
+
 import { useDispatch } from "react-redux";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -13,6 +16,8 @@ export function BackToUserBtn() {
         "bg-purple-100 sm:block w-full rounded-xl text-black h-full hidden md:hidden lg:block",
       ])
     );
+    dispatch(setChatInitialState());
+    dispatch(removeSelectedUser());
   };
   return (
     <button
