@@ -17,7 +17,13 @@ import { getDispalyClasses } from "@/store/slices/displaySlice";
 import { addMessage } from "@/store/slices/chatSlice";
 import { addNotification } from "@/store/slices/notificationSlice";
 //SOCKET
-import { getSocket } from "@/socket";
+import {
+  getSocket,
+  onSocketSetup,
+  onSocketConnected,
+  onSocketGetUsers,
+  offSocketGetUsers,
+} from "@/socket";
 
 export function ChatLayoutPage() {
   console.log("CHAT PAGE =>");
@@ -46,9 +52,10 @@ export function ChatLayoutPage() {
   // SENT EVEN TO SOCKER SERVER,FOR CONNECTION AND JOINING THE CHAT
   useEffect(() => {
     console.log("socket emit wala uf -2");
-    socket.on("connected", () => {
+    onSocketConnected(() => {
       console.log("getting response after connection");
-      socket.emit("setUp", currentUser);
+      // socket.emit("setUp", currentUser);
+      onSocketSetup(currentUser);
     });
 
     // console.log(currentUser);
@@ -68,13 +75,14 @@ export function ChatLayoutPage() {
   useEffect(() => {
     console.log("get user wala uf -3");
 
-    socket.on("getUsers", (userdata) => {
+    onSocketGetUsers((userdata: any) => {
       console.log("user coming from socket", userdata);
       setUserUpdated(userdata);
     });
     // cleanup function to unsubscribe the event listener
     return () => {
-      socket.off("getUsers");
+      // socket.off("getUsers");
+      offSocketGetUsers();
     };
   });
 

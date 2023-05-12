@@ -7,7 +7,11 @@ import { getSelectedChat, setChatInitialState } from "@slices/chatSlice";
 import { removeSelectedUser } from "@slices/userSlice";
 import { addToInbox, getInbox } from "@/store/slices/notificationSlice";
 import { useEffect } from "react";
-import { getSocket, onReceiveMessage } from "@/socket";
+import {
+  getSocket,
+  offSocketReceiveMessage,
+  onSocketReceiveMessage,
+} from "@/socket";
 
 export function Sidebar() {
   const dispatch = useDispatch();
@@ -27,7 +31,7 @@ export function Sidebar() {
   // this useEffect will handle onreceivemessage socket function if chat layout component hasn't been loaded yet
   useEffect(() => {
     console.log("hook running");
-    onReceiveMessage((newMessageReceived: any) => {
+    onSocketReceiveMessage((newMessageReceived: any) => {
       console.log("inside message received");
       if (!selectedChat || selectedChat._id != newMessageReceived.chat._id) {
         dispatch(addToInbox(newMessageReceived));
@@ -35,7 +39,8 @@ export function Sidebar() {
     });
     // cleanup function to unsubscribe the event listener
     return () => {
-      socket.off("message received");
+      // socket.off("message received");
+      offSocketReceiveMessage();
     };
   }, [selectedChat]);
 

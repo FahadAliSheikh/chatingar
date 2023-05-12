@@ -11,7 +11,12 @@ import { addMessage, getMessages, getSelectedChat } from "@slices/chatSlice";
 import { addToInbox } from "@/store/slices/notificationSlice";
 
 //SOCKET
-import { getSocket, onReceiveMessage } from "@/socket";
+import {
+  getSocket,
+  onSocketReceiveMessage,
+  offSocketReceiveMessage,
+  onSocketSendMessage,
+} from "@/socket";
 //EMOJI LIBRARY
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
@@ -53,7 +58,7 @@ export function Messages() {
 
   useEffect(() => {
     console.log("hook running");
-    onReceiveMessage((newMessageReceived: any) => {
+    onSocketReceiveMessage((newMessageReceived: any) => {
       // handle received message
       // console.log(
       //   !selectedChat || selectedChat._id !== newMessageReceived.chat._id
@@ -69,7 +74,8 @@ export function Messages() {
     });
     // cleanup function to unsubscribe the event listener
     return () => {
-      socket.off("message received");
+      // socket.off("message received");
+      offSocketReceiveMessage();
     };
   }, [selectedChat]);
 
@@ -88,7 +94,8 @@ export function Messages() {
           console.log("new Message data", data);
           // setMessages([...messages, data]);
           dispatch(addMessage(data));
-          socket.emit("new message", data);
+          // socket.emit("new message", data);
+          onSocketSendMessage(data);
         });
     }
   };

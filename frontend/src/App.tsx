@@ -12,11 +12,6 @@ import RequireAuth from "@store/slices/RequireAuth";
 import { ChatBox } from "@features/chat";
 import { Inbox } from "@features/inbox";
 import { ContactUs } from "./pages/contact-us";
-// import socketIO from "socket.io-client";
-// import { io } from "socket.io-client";
-
-// import { Rout} from "@config/routes";
-// const socket = io("http://localhost:4000");
 
 function App() {
   return (

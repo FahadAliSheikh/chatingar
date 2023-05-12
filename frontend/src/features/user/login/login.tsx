@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSigninUserMutation } from "@/store/api/authApi";
 import { setCredentials, selectCurrentUser } from "@/store/slices/authSlice";
-import { getSocket } from "@/socket";
+import { getSocket, onSocketSetup } from "@/socket";
 
 interface LoginState {
   email: string;
@@ -51,7 +51,8 @@ export function Login() {
       toast.success("Logged in successfully");
       // setOpenPostModal(false);
       dispatch(setCredentials(data));
-      socket.emit("setUp", data);
+      // socket.emit("setUp", data);
+      onSocketSetup(data);
       navigate("/chat/chat-box");
       // navigate("/chat");
     }

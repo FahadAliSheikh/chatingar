@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Routes } from "@config/routes";
-import { getSocket } from "@socket/get-socket";
+import { getSocket, onSocketRemoveUser } from "@socket/get-socket";
 import { User } from "@interfaces/user";
 // redux login
 import { useLocation, useNavigate } from "react-router-dom";
@@ -47,7 +47,8 @@ export function Navbar() {
     dispatch(setUserInitialState());
     dispatch(setNotifInitialState());
     dispatch(setChatInitialState());
-    socket.emit("removeUser", user);
+    // socket.emit("removeUser", user);
+    onSocketRemoveUser(user);
 
     navigate("/signin");
   };
