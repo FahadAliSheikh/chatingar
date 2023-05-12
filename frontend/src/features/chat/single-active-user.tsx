@@ -1,9 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDisplayedComponent } from "@/store/slices/displaySliceOld";
 import { setDisplayedClasses } from "@/store/slices/displaySlice";
 import { countries } from "@/constants/countries";
 import { setSelectedUser } from "@slices/userSlice";
-import { removeFromInbox } from "@slices/notificationSlice";
+import { getInbox, removeFromInbox } from "@slices/notificationSlice";
 import { useNavigate } from "react-router-dom";
 
 export function SingleActiveUser({ user }: any) {
@@ -13,6 +13,10 @@ export function SingleActiveUser({ user }: any) {
   const countryName = countries.find(
     (country) => country.code === user?.country
   );
+  const currentInbox = useSelector(getInbox);
+  function userWithId(userId: any) {
+    return currentInbox.some((sender: any) => sender._id === userId);
+  }
 
   const handleClick = async (user: any) => {
     dispatch(setSelectedUser(user));
@@ -48,6 +52,11 @@ export function SingleActiveUser({ user }: any) {
           {user?.gender}, {user?.age}, {countryName?.name}
         </p>
       </div>
+      {currentInbox.length > 0 && userWithId(user?._id) && (
+        <span className="justify-center items-center px-2 py-2 mx-2 text-xs font-bold text-red-100 bg-red-600 rounded-full">
+          {/* {currentInbox?.length} */}1
+        </span>
+      )}
     </div>
   );
 }
