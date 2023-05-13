@@ -89,25 +89,25 @@ io.on("connection", (socket) => {
   console.log("a user connected:", socket.id);
   socket.emit("connected");
   //take userId and socketId from user
-  socket.on("setUp", (user) => {
-    console.log("inside setup");
+  socket.on("set_up_user", (user) => {
+    console.log("inside set_up_user");
     addUser(user._id, socket.id);
     userController.updateActiveStatue(user._id, true);
     console.log(users);
-    io.emit("getUsers", users);
+    io.emit("get_active_users", users);
   });
 
-  socket.on("removeUser", (user) => {
+  socket.on("remove_user", (user) => {
     console.log("inside remove user");
     removeUser(socket.id);
     console.log(users);
     userController.updateActiveStatue(user._id, false);
     chatController.updateActiveStatue(user._id, false);
-    io.emit("removeUser", user);
-    io.emit("getUsers", users);
+    io.emit("remove_user", user);
+    io.emit("get_active_users", users);
   });
   //send and get message
-  socket.on("new message", (newMessageReceived) => {
+  socket.on("send_message", (newMessageReceived) => {
     console.log(newMessageReceived);
     const senderId = newMessageReceived.sender._id;
     console.log(newMessageReceived.chat.users);
@@ -124,7 +124,7 @@ io.on("connection", (socket) => {
     // console.log("all users", users);
     console.log("sending message to:", user.socketId);
 
-    socket.to(user.socketId).emit("message received", newMessageReceived);
+    socket.to(user.socketId).emit("receive_message", newMessageReceived);
     // socket.emit("message received", newMessageReceived);
   });
 
@@ -138,6 +138,6 @@ io.on("connection", (socket) => {
       userController.updateActiveStatue(user.userId, false);
     }
     removeUser(socket.id);
-    io.emit("getUsers", users);
+    io.emit("get_active_users", users);
   });
 });

@@ -9,38 +9,45 @@ let socket: Socket;
 export const onSocketConnected = (callback: any) => {
   socket.on("connected", callback);
 };
-export const emitSocketSetup = (data: any) => {
-  socket.emit("setUp", data);
+export const offSocketConnected = () => {
+  socket.off("connected");
 };
+export const emitSocketSetup = (data: any) => {
+  socket.emit("set_up_user", data);
+};
+export const offSocketSetup = () => {
+  socket.off("set_up_user");
+};
+
 export const onSocketGetUsers = (callback: any) => {
-  socket.on("getUsers", callback);
+  socket.on("get_active_users", callback);
 };
 
 export const offSocketGetUsers = () => {
-  socket.off("getUsers");
+  socket.off("get_active_users");
 };
 export const emitSocketSendMessage = (data: any) => {
-  socket.emit("new message", data);
+  socket.emit("send_message", data);
 };
 
 export const onSocketReceiveMessage = (callback: any) => {
-  socket.on("message received", callback);
+  socket.on("receive_message", callback);
 };
 
 export const offSocketReceiveMessage = () => {
-  socket.off("message received");
+  socket.off("receive_message");
 };
 
 export const emitSocketRemoveUser = (user: any) => {
-  socket.emit("removeUser", user);
+  socket.emit("remove_user", user);
 };
 
 export const onSocketRemoveUser = (user: any) => {
-  socket.on("removeUser", user);
+  socket.on("remove_user", user);
 };
 
 export const offSocketRemoveUser = () => {
-  socket.off("removeUser");
+  socket.off("remove_user");
 };
 
 export const getSocket = () => {

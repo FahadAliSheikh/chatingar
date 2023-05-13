@@ -23,6 +23,8 @@ import {
   onSocketConnected,
   onSocketGetUsers,
   offSocketGetUsers,
+  offSocketSetup,
+  offSocketConnected,
 } from "@/socket";
 
 export function ChatLayoutPage() {
@@ -57,7 +59,10 @@ export function ChatLayoutPage() {
       // socket.emit("setUp", currentUser);
       emitSocketSetup(currentUser);
     });
-
+    return () => {
+      offSocketConnected();
+      offSocketSetup();
+    };
     // console.log(currentUser);
   });
 
