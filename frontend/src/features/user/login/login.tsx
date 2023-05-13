@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSigninUserMutation } from "@/store/api/authApi";
 import { setCredentials, selectCurrentUser } from "@/store/slices/authSlice";
-import { getSocket, onSocketSetup } from "@/socket";
+import { getSocket, emitSocketSetup } from "@/socket";
 
 interface LoginState {
   email: string;
@@ -52,7 +52,7 @@ export function Login() {
       // setOpenPostModal(false);
       dispatch(setCredentials(data));
       // socket.emit("setUp", data);
-      onSocketSetup(data);
+      emitSocketSetup(data);
       navigate("/chat/chat-box");
       // navigate("/chat");
     }

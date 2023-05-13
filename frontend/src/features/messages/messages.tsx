@@ -7,7 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSendMessageMutation } from "@/store/api/chatApi";
 //SLICES
 import { selectCurrentUser } from "@store/slices/authSlice";
-import { addMessage, getMessages, getSelectedChat } from "@slices/chatSlice";
+import {
+  addMessage,
+  getMessages,
+  getSelectedChat,
+  setSelectedChat,
+} from "@slices/chatSlice";
 import { addToInbox } from "@/store/slices/notificationSlice";
 
 //SOCKET
@@ -15,11 +20,17 @@ import {
   getSocket,
   onSocketReceiveMessage,
   offSocketReceiveMessage,
-  onSocketSendMessage,
+  emitSocketSendMessage,
+  onSocketRemoveUser,
+  offSocketRemoveUser,
 } from "@/socket";
 //EMOJI LIBRARY
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import { setSelectedUser } from "@/store/slices/userSlice";
+import { removeSelectedUser } from "@/store/slices/userSlice";
+import { removeSelectedChat } from "@slices/chatSlice";
+import { useNavigate } from "react-router-dom";
 
 // MESSAGE COMPONENT
 export function Messages() {
@@ -27,6 +38,8 @@ export function Messages() {
   let socket = getSocket();
 
   const dispatch = useDispatch();
+  let navigate = useNavigate();
+
   const currentUser = useSelector(selectCurrentUser);
   const selectedChat = useSelector(getSelectedChat);
   let messages = useSelector(getMessages);
@@ -56,14 +69,17 @@ export function Messages() {
     inputRef.current?.focus();
   }, [messages, isPickerVisible]);
 
+  // useEffect to handle receiving messages
   useEffect(() => {
     console.log("hook running");
     onSocketReceiveMessage((newMessageReceived: any) => {
+      // socket.on("message received", (newMessageReceived: any) => {
+      console.log("socket event running");
       // handle received message
       // console.log(
       //   !selectedChat || selectedChat._id !== newMessageReceived.chat._id
       // );
-      if (!selectedChat || selectedChat._id != newMessageReceived.chat._id) {
+      if (!selectedChat || selectedChat._id !== newMessageReceived.chat._id) {
         // display notification here
         dispatch(addToInbox(newMessageReceived));
       } else {
@@ -79,6 +95,25 @@ export function Messages() {
     };
   }, [selectedChat]);
 
+  //useEffect to handle remove user that has loggged out
+  useEffect(() => {
+    onSocketRemoveUser((loggedOutUser: any) => {
+      console.log("remove selected chat running");
+      if (!selectedChat) return;
+      console.log(selectedChat.users);
+      if (
+        selectedChat.users.some((user: any) => user._id === loggedOutUser._id)
+      ) {
+        dispatch(removeSelectedChat());
+        dispatch(removeSelectedUser());
+        navigate("/chat");
+      }
+    });
+    return () => {
+      // socket.off("removeUser");
+      offSocketRemoveUser();
+    };
+  });
   const handleSendMessage = async (event: any) => {
     // close emoji picker
     setIsPickerVisible(false);
@@ -95,7 +130,7 @@ export function Messages() {
           // setMessages([...messages, data]);
           dispatch(addMessage(data));
           // socket.emit("new message", data);
-          onSocketSendMessage(data);
+          emitSocketSendMessage(data);
         });
     }
   };

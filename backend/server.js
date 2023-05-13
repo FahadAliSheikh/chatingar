@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
     console.log(users);
     userController.updateActiveStatue(user._id, false);
     chatController.updateActiveStatue(user._id, false);
-
+    io.emit("removeUser", user);
     io.emit("getUsers", users);
   });
   //send and get message
@@ -141,41 +141,3 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 });
-// io.on("connection", (socket) => {
-//   console.log("connected to socket.io", socket.id);
-//   io.emit("welcome", "testing to receive message on client from server");
-//   socket.on("setUp", (userData) => {
-//     console.log('inside setup')
-//     socket.join(userData._id);
-//     // console.log(userData._id);
-//     console.log(socket.rooms);
-//     socket.emit("connected", userData);
-//   });
-
-//   // socket.on("join chat", (room) => {
-//   //   // socket.join(room);
-//   //   // console.log("user joined room:", room);
-//   //   console.log(socket.rooms);
-//   // });
-
-//   socket.on("typing", (room) => socket.in(room).emit("typing"));
-//   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
-
-//   socket.on("new message", (newMessageReceived) => {
-//     let chat = newMessageReceived.chat;
-//     if (!chat.users) return console.log("chat.users not defined!");
-//     chat.users.forEach((user) => {
-//       console.log(newMessageReceived);
-//       if (user._id == newMessageReceived.sender._id) return;
-//       socket.to(user._id).emit("message received", newMessageReceived);
-//       io.to(user._id).emit("message received", newMessageReceived);
-//       // io.emit("message received", newMessageReceived);
-//     });
-//     // io.emit("message received", newMessageReceived);
-//   });
-
-//   socket.off("setup", () => {
-//     console.log("User disconnected!");
-//     socket.leave(userData._id);
-//   });
-// });

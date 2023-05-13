@@ -9,7 +9,7 @@ let socket: Socket;
 export const onSocketConnected = (callback: any) => {
   socket.on("connected", callback);
 };
-export const onSocketSetup = (data: any) => {
+export const emitSocketSetup = (data: any) => {
   socket.emit("setUp", data);
 };
 export const onSocketGetUsers = (callback: any) => {
@@ -19,7 +19,7 @@ export const onSocketGetUsers = (callback: any) => {
 export const offSocketGetUsers = () => {
   socket.off("getUsers");
 };
-export const onSocketSendMessage = (data: any) => {
+export const emitSocketSendMessage = (data: any) => {
   socket.emit("new message", data);
 };
 
@@ -31,8 +31,16 @@ export const offSocketReceiveMessage = () => {
   socket.off("message received");
 };
 
-export const onSocketRemoveUser = (user: any) => {
+export const emitSocketRemoveUser = (user: any) => {
   socket.emit("removeUser", user);
+};
+
+export const onSocketRemoveUser = (user: any) => {
+  socket.on("removeUser", user);
+};
+
+export const offSocketRemoveUser = () => {
+  socket.off("removeUser");
 };
 
 export const getSocket = () => {

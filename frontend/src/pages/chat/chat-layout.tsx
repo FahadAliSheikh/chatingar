@@ -19,7 +19,7 @@ import { addNotification } from "@/store/slices/notificationSlice";
 //SOCKET
 import {
   getSocket,
-  onSocketSetup,
+  emitSocketSetup,
   onSocketConnected,
   onSocketGetUsers,
   offSocketGetUsers,
@@ -55,7 +55,7 @@ export function ChatLayoutPage() {
     onSocketConnected(() => {
       console.log("getting response after connection");
       // socket.emit("setUp", currentUser);
-      onSocketSetup(currentUser);
+      emitSocketSetup(currentUser);
     });
 
     // console.log(currentUser);

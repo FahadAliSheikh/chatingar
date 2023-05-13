@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { onSocketSetup, useSocket } from "@socket/get-socket";
+import { emitSocketSetup, useSocket } from "@socket/get-socket";
 import { User } from "@interfaces/user";
 import { countries } from "@constants/countries";
 // redux login
@@ -77,8 +77,8 @@ export function LoginWOR() {
       // setOpenPostModal(false);
       dispatch(setCredentials(data));
       // socket.emit("setUp", data);
-      onSocketSetup(data);
-      navigate("/chat");
+      emitSocketSetup(data);
+      navigate("/chat/chat-box");
     }
 
     if (isError) {
