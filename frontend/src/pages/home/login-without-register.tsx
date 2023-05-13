@@ -7,7 +7,7 @@ export function LoginWORPage() {
     <div>
       <Header
         heading="Join chat as a guest user without registration!"
-        paragraph="some paragrapht here"
+        paragraph="Start chatting without creating an account on chatingar"
         linkName=""
         linkUrl=""
       />

@@ -110,7 +110,9 @@ export function Signup() {
             onChange={handleNameChange}
             className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
             required
-            placeholder="Select a unique username"
+            placeholder="Select a unique username!"
+            minLength={4}
+            maxLength={16}
             ref={inputRef}
           />
         </div>
@@ -173,7 +175,7 @@ export function Signup() {
             <div>
               <label
                 htmlFor="male"
-                className="inline-flex items-center mr-4 gap-4"
+                className="inline-flex items-center mr-4 gap-2"
               >
                 <input
                   id="male"
@@ -184,7 +186,7 @@ export function Signup() {
                   onChange={handleGenderChange}
                   className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500"
                 />
-                <span className="ml-2">Male</span>
+                <span className="">Male</span>
               </label>
               <label htmlFor="female" className="inline-flex items-center">
                 <input

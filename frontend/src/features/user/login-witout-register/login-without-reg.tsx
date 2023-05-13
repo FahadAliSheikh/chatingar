@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import uuid from "react-uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -7,10 +6,10 @@ import { emitSocketSetup, useSocket } from "@socket/get-socket";
 import { User } from "@interfaces/user";
 import { countries } from "@constants/countries";
 // redux login
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useSignupWOMMutation } from "@/store/api/authApi";
-import { setCredentials, selectCurrentUser } from "@/store/slices/authSlice";
+import { setCredentials } from "@/store/slices/authSlice";
 
 interface userState {
   name: string;
@@ -21,8 +20,7 @@ interface userState {
 }
 
 export function LoginWOR() {
-  console.log("inside loging wor");
-  // countries.unshift();
+  console.log(" loging wor comp =>");
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,8 +30,6 @@ export function LoginWOR() {
   }, []);
   const [signupWOM, { data, isLoading, error, isError, isSuccess }] =
     useSignupWOMMutation();
-
-  const socket = useSocket();
 
   const [user, setUser] = useState<userState>({
     name: "",
@@ -117,6 +113,8 @@ export function LoginWOR() {
             className="rounded-md appearance-none  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm dark:bg-white"
             required
             placeholder="Select a unique username!"
+            minLength={4}
+            maxLength={16}
             ref={inputRef}
           />
         </div>
@@ -146,7 +144,7 @@ export function LoginWOR() {
             <div>
               <label
                 htmlFor="male"
-                className="inline-flex items-center mr-4 gap-4"
+                className="inline-flex items-center mr-4 gap-2"
               >
                 <input
                   id="male"
@@ -157,7 +155,7 @@ export function LoginWOR() {
                   onChange={handleGenderChange}
                   className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500"
                 />
-                <span className="ml-2">Male</span>
+                <span className="mr-4">Male</span>
               </label>
               <label htmlFor="female" className="inline-flex items-center">
                 <input
