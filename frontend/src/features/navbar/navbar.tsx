@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Routes } from "@config/routes";
 import { getSocket, emitSocketRemoveUser } from "@socket/get-socket";
-import { User } from "@interfaces/user";
 // redux login
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, logout } from "@store/slices/authSlice";
 import { setUserInitialState } from "@store/slices/userSlice";
@@ -164,7 +163,7 @@ export function Navbar() {
         {user ? (
           <Menu
             as="div"
-            className="relative inline-block text-left hidden md:block lg:block"
+            className="relative text-left hidden md:block lg:block"
           >
             <div>
               <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
