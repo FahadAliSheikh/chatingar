@@ -56,14 +56,23 @@ export function ChatLayoutPage() {
     console.log("socket emit wala uf -2");
     onSocketConnected(() => {
       console.log("getting response after connection");
-      // socket.emit("setUp", currentUser);
       emitSocketSetup(currentUser);
     });
     return () => {
       offSocketConnected();
       offSocketSetup();
     };
-    // console.log(currentUser);
+  }, [currentUser]);
+
+  useEffect(() => {
+    onSocketGetUsers((userdata: any) => {
+      console.log("user coming from socket", userdata);
+      setUserUpdated(userdata);
+    });
+    // cleanup function to unsubscribe the event listener
+    return () => {
+      offSocketGetUsers();
+    };
   });
 
   let searchData = {
@@ -74,22 +83,16 @@ export function ChatLayoutPage() {
 
   useEffect(() => {
     console.log("UF-4");
-    executeGetActiveUsersQuery(searchData);
-  }, [userUpdated]);
-
-  useEffect(() => {
-    console.log("get user wala uf -3");
-
-    onSocketGetUsers((userdata: any) => {
-      console.log("user coming from socket", userdata);
-      setUserUpdated(userdata);
-    });
-    // cleanup function to unsubscribe the event listener
+    const request = executeGetActiveUsersQuery(searchData);
+    // Clean up the query
     return () => {
-      // socket.off("getUsers");
-      offSocketGetUsers();
+      // getActiveUsers.unsubscribe();
+      if (activeUsers) {
+        request.abort();
+        // dispatch(setActiveUsers(activeUsers));
+      }
     };
-  });
+  }, [userUpdated]);
 
   useEffect(() => {
     console.log("UF-5");
@@ -104,7 +107,11 @@ export function ChatLayoutPage() {
         <GenderFilter />
         <div className="flex flex-row h-full">
           <Sidebar />
-          <ActiveUsers flag="usersList" />
+          {activeUsers && activeUsers.length > 0 ? (
+            <ActiveUsers flag="usersList" />
+          ) : (
+            <p>{activeUsers.length} active users found!</p>
+          )}
           {/* {isSuccess && <ActiveUsers />} */}
         </div>
       </section>
