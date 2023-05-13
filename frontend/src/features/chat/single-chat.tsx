@@ -21,7 +21,7 @@ export function SingleChat({ selectedChat }: any) {
   ] = chatApi.endpoints.getChatMessages.useLazyQuery();
 
   if (!selectedChat) {
-    content = <p>Please Select a user to start chat...</p>;
+    content = <p>Please Select a user to start chat single chat...</p>;
   }
 
   useEffect(() => {

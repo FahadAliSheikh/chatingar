@@ -96,7 +96,7 @@ export function ChatLayoutPage() {
 
   useEffect(() => {
     console.log("UF-5");
-    if (isSuccess) {
+    if (activeUsers) {
       dispatch(setActiveUsers(activeUsers));
     }
   });
@@ -107,11 +107,7 @@ export function ChatLayoutPage() {
         <GenderFilter />
         <div className="flex flex-row h-full">
           <Sidebar />
-          {activeUsers && activeUsers.length > 0 ? (
-            <ActiveUsers flag="usersList" />
-          ) : (
-            <p>{activeUsers.length} active users found!</p>
-          )}
+          <ActiveUsers flag="usersList" />
           {/* {isSuccess && <ActiveUsers />} */}
         </div>
       </section>

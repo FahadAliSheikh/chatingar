@@ -123,7 +123,7 @@ export function Navbar() {
                 {user ? (
                   <>
                     <li className="text-white hover:text-indigo-200">
-                      <a href="/chat">Chat page</a>
+                      <a href="/chat/chat-box">Chat page</a>
                     </li>
                     <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
                       <a href="#">My Profile</a>

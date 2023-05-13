@@ -8,6 +8,7 @@ import { getSelectedUser } from "@slices/userSlice";
 import { setSelectedChat } from "@slices/chatSlice";
 //API
 import { useGetSelectedChatMutation } from "@/store/api/chatApi";
+import { WelcomeChat } from "./welcome-chat";
 
 export function ChatBox() {
   console.log(" CHATBOX component=>");
@@ -20,7 +21,12 @@ export function ChatBox() {
   const [fetchSelectedChat, { data, isLoading, error, isError, isSuccess }] =
     useGetSelectedChatMutation();
   if (!selectedUser) {
-    content = <p>Please Select a user to start chat...</p>;
+    // content = <p>Please Select a user to start chat... chat box</p>;
+    content = (
+      <div className="flex items-center py-8 rounded-xl">
+        <WelcomeChat />
+      </div>
+    );
   }
   useEffect(() => {
     if (selectedUser) {

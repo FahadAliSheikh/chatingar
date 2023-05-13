@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setActiveUsers } from "@slices/userSlice";
 
 export function GenderFilter() {
+  console.log("GENDER FILTER COMP =>");
   const dispatch = useDispatch();
 
   const [
