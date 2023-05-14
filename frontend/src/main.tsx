@@ -12,7 +12,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <App />
+        <div className="font-poppins">
+          <App />
+        </div>
       </PersistGate>
     </Provider>
   </BrowserRouter>
