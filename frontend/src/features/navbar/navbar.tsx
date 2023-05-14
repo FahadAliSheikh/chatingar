@@ -112,9 +112,9 @@ export function Navbar() {
               <li className="text-white hover:text-indigo-200">
                 <a href="#">Blog</a>
               </li>
-              <li className="text-white hover:text-indigo-200">
+              {/* <li className="text-white hover:text-indigo-200">
                 <a href="#">About US</a>
-              </li>
+              </li> */}
               <li className="text-white hover:text-indigo-200">
                 <a href="/contact">Contact US</a>
               </li>

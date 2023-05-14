@@ -121,7 +121,7 @@ export function UserSearchForm() {
             </label>
             <label
               htmlFor="male"
-              className="inline-flex items-center mr-2 gap-4"
+              className="inline-flex items-center mr-2 gap-2"
             >
               <span className="ml-5">Male</span>
 
