@@ -85,13 +85,13 @@ export function ChatLayoutPage() {
     console.log("UF-4");
     const request = executeGetActiveUsersQuery(searchData);
     // Clean up the query
-    return () => {
-      // getActiveUsers.unsubscribe();
-      if (activeUsers) {
-        request.abort();
-        // dispatch(setActiveUsers(activeUsers));
-      }
-    };
+    // return () => {
+    //   // getActiveUsers.unsubscribe();
+    //   if (activeUsers) {
+    //     request.abort();
+    //     // dispatch(setActiveUsers(activeUsers));
+    //   }
+    // };
   }, [userUpdated]);
 
   useEffect(() => {

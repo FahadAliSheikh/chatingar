@@ -90,54 +90,62 @@ io.on("connection", (socket) => {
   socket.emit("connected");
   //take userId and socketId from user
   socket.on("set_up_user", (user) => {
-    console.log("inside set_up_user");
-    addUser(user._id, socket.id);
-    userController.updateActiveStatue(user._id, true);
-    console.log(users);
-    io.emit("get_active_users", users);
+    if (user) {
+      // Add user to socket array
+      addUser(user._id, socket.id);
+      // Update user's status in database
+      userController.updateActiveStatue(user._id, true);
+      // Emit an event to all connected clients
+      io.emit("get_active_users", users);
+    }
   });
 
   socket.on("remove_user", (user) => {
     console.log("inside remove user");
+    // Remove user from socket array
     removeUser(socket.id);
-    console.log(users);
+    // Update user's active status to false
     userController.updateActiveStatue(user._id, false);
+    // Update user's chat status to false
     chatController.updateActiveStatue(user._id, false);
+    // Emit socket event to all connected clients to remove user
     io.emit("remove_user", user);
+    // Emit socket event to all connected clients to get all active users
     io.emit("get_active_users", users);
   });
+
   //send and get message
   socket.on("send_message", (newMessageReceived) => {
-    console.log(newMessageReceived);
     const senderId = newMessageReceived.sender._id;
-    console.log(newMessageReceived.chat.users);
+    if (!senderId) return;
+    // find receiver of message from chat members
     const receiver = newMessageReceived.chat.users.find(
       (member) => member._id !== senderId
     );
-    console.log("--------------------------");
-    console.log(senderId);
-    console.log(receiver._id);
-    console.log("--------------------------");
-
+    if (!receiver) return;
+    // find user from socket array
     const user = getUser(receiver._id);
-    // console.log("found user", user);
-    // console.log("all users", users);
-    console.log("sending message to:", user.socketId);
 
+    if (!user) return;
+    console.log("sending message to:", user.socketId);
+    if (!user.socketId) return;
+    // emit message to found user
     socket.to(user.socketId).emit("receive_message", newMessageReceived);
     // socket.emit("message received", newMessageReceived);
   });
 
   //when disconnect
   socket.on("disconnect", () => {
-    console.log("------------refresing user-----------");
     console.log("a user disconnected!");
     const user = getUserBySocket(socket.id);
-    console.log("found disconnected user", user);
+    if (!user) return;
     if (user) {
+      // update user's active status to false
       userController.updateActiveStatue(user.userId, false);
     }
+    // remove user from socket array
     removeUser(socket.id);
+    // Emit socket message to all connected clients for updated
     io.emit("get_active_users", users);
   });
 });
