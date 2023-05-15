@@ -1,10 +1,11 @@
 import React from "react";
 
 export function Footer() {
+  let year = new Date().getFullYear();
   return (
     <footer className="bg-pink-500 text-xl text-white " id="footer">
       <section className="mx-auto flex max-w-4xl flex-col p-4 sm:flex-row sm:justify-between">
-        <address>
+        {/* <address>
           <h2>Acme Rocket-Powered Products, Inc.</h2>
           555 Astro Way
           <br />
@@ -16,8 +17,8 @@ export function Footer() {
           </a>
           <br />
           Phone: <a href="tel:+15555555555">(555) 555-5555</a>
-        </address>
-        <nav className="hidden flex-col gap-2 md:flex" aria-label="footer">
+        </address> */}
+        <nav className="flex flex-col gap-2 md:flex py-5" aria-label="footer">
           <a href="#" className="hover:opacity-90">
             SAFETY
           </a>
@@ -36,7 +37,7 @@ export function Footer() {
         </nav>
         <div className="flex flex-col sm:gap-2">
           <p className="text-right">
-            Copyright &copy; <span id="year">2023</span>
+            Copyright &copy; <span id="year">{year}</span>
           </p>
           <p className="text-right">All Rights Reserved</p>
         </div>
