@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setDisplayedComponent } from "@/store/slices/displaySliceOld";
 import { setDisplayedClasses } from "@/store/slices/displaySlice";
 import { countries } from "@/constants/countries";
 import { setSelectedUser } from "@slices/userSlice";

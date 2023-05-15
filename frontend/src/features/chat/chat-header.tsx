@@ -1,8 +1,11 @@
 import { BackToUserBtn } from "./back-to-user-btn";
+import { countries } from "@/constants/countries";
 
 export function ChatHeader({ selectedUser }: any) {
   let content: any;
-
+  const countryName = countries.find(
+    (country) => country.code === selectedUser?.country
+  );
   if (selectedUser) {
     content = (
       <div
@@ -26,7 +29,7 @@ export function ChatHeader({ selectedUser }: any) {
             </p>
             <p className="text-sm text-gray-800 truncate dark:text-gray-800">
               {selectedUser?.gender}, {selectedUser?.age} years, <span></span>
-              {selectedUser?.country}
+              {countryName?.name}
             </p>
           </div>
         </div>
