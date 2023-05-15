@@ -125,17 +125,29 @@ export function Messages() {
     const newMessage = inputRef?.current?.value;
     if ((event.type === "click" || event.key === "Enter") && newMessage) {
       inputRef.current.value = "";
+      const socketMessage = {
+        chat: selectedChat,
+        content: newMessage,
+        createdAt: new Date().toISOString().slice(0, 10),
+        updatedAt: new Date().toISOString().slice(0, 10),
+        sender: currentUser,
+      };
+      console.log("socket message", socketMessage);
+      dispatch(addMessage(socketMessage));
+      // socket.emit("new message", data);
+      emitSocketSendMessage(socketMessage);
+
       sendMessage({
         chatId: selectedChat?._id,
         content: newMessage,
       })
         .unwrap()
         .then((data: any) => {
-          console.log("new Message data", data);
-          // setMessages([...messages, data]);
-          dispatch(addMessage(data));
-          // socket.emit("new message", data);
-          emitSocketSendMessage(data);
+          // console.log("new Message data", data);
+          // // setMessages([...messages, data]);
+          // dispatch(addMessage(data));
+          // // socket.emit("new message", data);
+          // emitSocketSendMessage(data);
         });
     }
   };
