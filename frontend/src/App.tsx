@@ -13,6 +13,7 @@ import { ChatBox } from "@features/chat";
 import { Inbox } from "@features/inbox";
 import { ContactUs } from "./pages/contact-us";
 import { Faqs } from "./pages/faqs";
+import { Safety } from "./pages/satety";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/frequely-asked" element={<Faqs />} />
+          <Route path="/safety" element={<Safety />} />
           <Route element={<RequireAuth />}>
             <Route path="/chat" element={<ChatLayoutPage />}>
               <Route path="search" element={<UserSearchForm />} />

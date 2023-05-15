@@ -21,7 +21,7 @@ export function Footer() {
           Phone: <a href="tel:+15555555555">(555) 555-5555</a>
         </address> */}
         <nav className="flex flex-col gap-2 md:flex py-5" aria-label="footer">
-          <a href="#" className="hover:opacity-90">
+          <a href="/safety" className="hover:opacity-90">
             SAFETY
           </a>
           {/* <a href="#" className="hover:opacity-90">
