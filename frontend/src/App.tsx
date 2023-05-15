@@ -12,6 +12,7 @@ import RequireAuth from "@store/slices/RequireAuth";
 import { ChatBox } from "@features/chat";
 import { Inbox } from "@features/inbox";
 import { ContactUs } from "./pages/contact-us";
+import { Faqs } from "./pages/faqs";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/signin" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/frequely-asked" element={<Faqs />} />
           <Route element={<RequireAuth />}>
             <Route path="/chat" element={<ChatLayoutPage />}>
               <Route path="search" element={<UserSearchForm />} />

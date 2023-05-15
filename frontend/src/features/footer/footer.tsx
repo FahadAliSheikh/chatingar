@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Footer() {
   let year = new Date().getFullYear();
+  const navigate = useNavigate();
   return (
     <footer className="bg-pink-500 text-xl text-white " id="footer">
       <section className="mx-auto flex max-w-4xl flex-col p-4 sm:flex-row sm:justify-between">
@@ -22,16 +24,16 @@ export function Footer() {
           <a href="#" className="hover:opacity-90">
             SAFETY
           </a>
-          <a href="#" className="hover:opacity-90">
+          {/* <a href="#" className="hover:opacity-90">
             PRIVACY
           </a>
           <a href="#" className="hover:opacity-90">
             Cookies POLICY
+          </a> */}
+          <a href="/frequely-asked" className="hover:opacity-90">
+            FAQs
           </a>
-          <a href="#" className="hover:opacity-90">
-            ABOUT US
-          </a>
-          <a href="#" className="hover:opacity-90">
+          <a href="/contact" className="hover:opacity-90">
             CONTACT US
           </a>
         </nav>

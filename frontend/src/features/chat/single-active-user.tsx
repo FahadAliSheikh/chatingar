@@ -41,7 +41,7 @@ export function SingleActiveUser({ user }: any) {
           className="w-10 h-10 rounded-full"
           // src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
           src={`/icons/${user?.gender}.png`}
-          alt="Neil image"
+          alt="User image"
         />
       </div>
       <div className="flex-1 min-w-0">
