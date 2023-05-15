@@ -2,13 +2,13 @@ import { LoginWORPage } from "@pages/home";
 export function HomePage({ socket }: any) {
   return (
     <>
-      <section className="widescreen:section-min-height scroll-mt-40 tallscreen:section-min-height mb-12 flex flex-col-reverse justify-center gap-8 py-40 px-6 sm:flex-row">
-        <article className="sm:w-1/2 mt-15">
+      <section className="lg:section-min-height scroll-mt-40 tallscreen:section-min-height mb-12 flex flex-col-reverse justify-center gap-8 py-40 px-6 lg:flex-row">
+        <article className="w-full lg:w-1/2 mt-15">
           <h2 className="max-w-md text-center text-2xl font-bold text-black dark:text-black sm:text-left sm:text-3xl">
-            Free Chat Rooms, Chat Online With No Registration
+            Free Online Chatting, Chat Online Without Registration
           </h2>
           <p className="mt-4 max-w-md text-center sm:text-left">
-            Chatingar is an online free chat rooms. Here you can meet new
+            Chatingar is an online free chat website. Here you can meet new
             friends from all over the world. No download, no setup & no
             registration needed. Please read chat rules:
           </p>
@@ -83,7 +83,7 @@ export function HomePage({ socket }: any) {
       </section>
       <hr className="mx-auto w-1/2 bg-black dark:bg-white" />
 
-      <section className="widescreen:section-min-height scroll-mt-40 tallscreen:section-min-height mb-12 flex flex-col-reverse justify-center gap-8 py-40 px-6 sm:flex-row">
+      {/* <section className="widescreen:section-min-height scroll-mt-40 tallscreen:section-min-height mb-12 flex flex-col-reverse justify-center gap-8 py-40 px-6 sm:flex-row">
         <p className="text-center">
           Chatingar is a free chat room website where you can have live chat
           with single women and men, you can discuss with random strangers from
@@ -91,6 +91,16 @@ export function HomePage({ socket }: any) {
           world, at the same time in multiple chatrooms and discussion groups,
           any time you can start a private conversation to meet girls and boys
           living nearby in your area.
+        </p>
+      </section> */}
+      <section className="widescreen:section-min-height scroll-mt-40 tallscreen:section-min-height mb-12 flex flex-col-reverse justify-center gap-8 py-40 px-6 sm:flex-row">
+        <p className="text-center">
+          Welcome to Chatingar, the ultimate destination for free chat rooms.
+          Engage in lively conversations with single men and women worldwide.
+          Connect with random strangers from the USA, Canada, UK, Australia, and
+          beyond in real-time. Immerse yourself in a vibrant community, explore
+          chatrooms, and meet fascinating individuals in your area. Get ready
+          for an exciting journey of connection and discovery.
         </p>
       </section>
     </>
