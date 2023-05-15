@@ -20,7 +20,9 @@ export function ActiveUsers({ flag }: any) {
           <SingleActiveUser key={user._id} user={user} />
         ))
       ) : (
-        <p className=" justify-center text-center">No activity so far..</p>
+        <p className="border border-white-800 text-center text-white hover:cursor-pointer rounded-md bg-red-500 py-6">
+          No activity so far..
+        </p>
       )}
     </div>
   );

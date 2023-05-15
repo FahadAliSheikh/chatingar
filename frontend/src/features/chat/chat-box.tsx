@@ -9,6 +9,7 @@ import { setSelectedChat } from "@slices/chatSlice";
 //API
 import { useGetSelectedChatMutation } from "@/store/api/chatApi";
 import { WelcomeChat } from "./welcome-chat";
+import { Spinner } from "../spinner";
 
 export function ChatBox() {
   console.log(" CHATBOX component=>");
@@ -25,6 +26,7 @@ export function ChatBox() {
     content = (
       <div className="flex items-center py-8 rounded-xl">
         <WelcomeChat />
+        {/* <Spinner /> */}
       </div>
     );
   }
@@ -39,10 +41,18 @@ export function ChatBox() {
   }, [selectedUser]);
 
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = (
+      <div className="flex items-center justify-center h-screen py-8 rounded-xl">
+        <Spinner height={"h-24"} width={"w-24"} />
+      </div>
+    );
   }
   if (isError) {
-    content = <p>Error Occured!</p>;
+    content = (
+      <p className="border border-white-800 text-center text-white hover:cursor-pointer rounded-md bg-red-500 py-8">
+        Error in loading chat!
+      </p>
+    );
   }
   if (isSuccess) {
     content = (

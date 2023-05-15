@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { useSigninUserMutation } from "@/store/api/authApi";
 import { setCredentials, selectCurrentUser } from "@/store/slices/authSlice";
 import { getSocket, emitSocketSetup } from "@/socket";
+import { Spinner } from "@/features/spinner";
 
 interface LoginState {
   email: string;
@@ -49,9 +50,7 @@ export function Login() {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Logged in successfully");
-      // setOpenPostModal(false);
       dispatch(setCredentials(data));
-      // socket.emit("setUp", data);
       emitSocketSetup(data);
       navigate("/chat/chat-box");
       // navigate("/chat");
@@ -123,8 +122,13 @@ export function Login() {
             <button
               type="submit"
               className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded hover:bg-purple-600 focus:outline-none focus:shadow-outline-purple active:bg-purple-500"
+              disabled={isLoading}
             >
-              Start chatting now!
+              {isLoading ? (
+                <Spinner height={"h-6"} width={"w-6"} />
+              ) : (
+                <p>Start chatting now!</p>
+              )}
             </button>
           </div>
         </form>

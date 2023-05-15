@@ -6,6 +6,7 @@ import { Messages } from "../messages/messages";
 import { chatApi } from "@/store/api/chatApi";
 //SLICES
 import { setMessages } from "@/store/slices/chatSlice";
+import { Spinner } from "../spinner";
 
 export function SingleChat({ selectedChat }: any) {
   console.log("single chat component=>");
@@ -38,13 +39,20 @@ export function SingleChat({ selectedChat }: any) {
   }, [selectedChat]);
 
   if (isLoading) {
-    content = <p>Messages are loading...</p>;
+    content = (
+      <div className="flex items-center justify-center h-screen py-8 rounded-xl">
+        <Spinner height={"h-24"} width={"w-24"} />
+      </div>
+    );
   }
   if (isError) {
-    content = <p>Some Error occured</p>;
+    content = (
+      <p className="border border-white-800 text-center text-white hover:cursor-pointer rounded-md bg-red-500 py-8">
+        Error in loading messages!
+      </p>
+    );
   }
   if (isSuccess && data) {
-    // content = <>{data && <Messages messagesData={data} />}</>;
     content = <>{data && <Messages />}</>;
   }
 

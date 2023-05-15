@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 //SLICES
 import { setDisplayedClasses } from "@/store/slices/displaySlice";
 import { getSelectedChat, setChatInitialState } from "@slices/chatSlice";
-import { removeSelectedUser } from "@slices/userSlice";
+import { moveNewMsgOnTop, removeSelectedUser } from "@slices/userSlice";
 import { addToInbox, getInbox } from "@/store/slices/notificationSlice";
 import { useEffect } from "react";
 import {
@@ -35,6 +35,7 @@ export function Sidebar() {
       console.log("inside message received");
       if (!selectedChat || selectedChat._id != newMessageReceived.chat._id) {
         dispatch(addToInbox(newMessageReceived));
+        dispatch(moveNewMsgOnTop(newMessageReceived.sender));
       }
     });
     // cleanup function to unsubscribe the event listener

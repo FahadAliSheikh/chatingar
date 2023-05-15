@@ -7,7 +7,7 @@ export function WelcomeChat() {
   const currentUser = useSelector(selectCurrentUser);
   return (
     <section className="flex mx-auto flex-col bg-purple-300 border-lg w-2/3 px-3 rounded-xl">
-      <h1 className="text-3xl">
+      <h1 className="text-3xl my-5">
         Welcome to chatingaer
         <span className="font-bold"> {currentUser.name}</span>!
       </h1>

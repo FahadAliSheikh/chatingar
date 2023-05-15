@@ -51,7 +51,7 @@ export function ChatLayoutPage() {
     setOutletDivClasses(displayClasses[1]);
   }, [displayClasses]);
 
-  // SENT EVEN TO SOCKER SERVER,FOR CONNECTION AND JOINING THE CHAT
+  // SEND EVEN TO SOCKER SERVER,FOR CONNECTION AND JOINING THE CHAT
   useEffect(() => {
     console.log("socket emit wala uf -2");
     onSocketConnected(() => {

@@ -68,7 +68,7 @@ const allUsers = asyncHandler(async (req, res) => {
   let gender = req.query.gender;
   let country = req.query.country;
   let searchObje = {
-    isActive: true,
+    // isActive: true,
   };
   if (req.query.name) {
     searchObje.name = { $regex: req.query.name, $options: "i" };
@@ -89,9 +89,11 @@ const allUsers = asyncHandler(async (req, res) => {
         ],
       }
     : {};
-  const users = await User.find(searchObje).find({
-    _id: { $ne: req.user._id },
-  });
+  const users = await User.find(searchObje, "-password")
+    .find({
+      _id: { $ne: req.user._id },
+    })
+    .sort({ country: 1 });
   res.send(users);
 });
 

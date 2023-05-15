@@ -27,8 +27,8 @@ import {
 //EMOJI LIBRARY
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-import { setSelectedUser } from "@/store/slices/userSlice";
-import { removeSelectedUser } from "@/store/slices/userSlice";
+import { setSelectedUser, getActiveUsers } from "@/store/slices/userSlice";
+import { removeSelectedUser, moveNewMsgOnTop } from "@/store/slices/userSlice";
 import { removeSelectedChat } from "@slices/chatSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -42,6 +42,7 @@ export function Messages() {
 
   const currentUser = useSelector(selectCurrentUser);
   const selectedChat = useSelector(getSelectedChat);
+  const activeUsers = useSelector(getActiveUsers);
   let messages = useSelector(getMessages);
   const [isPickerVisible, setIsPickerVisible] = useState(false);
 
@@ -82,10 +83,14 @@ export function Messages() {
       if (!selectedChat || selectedChat._id !== newMessageReceived.chat._id) {
         // display notification here
         dispatch(addToInbox(newMessageReceived));
+        dispatch(moveNewMsgOnTop(newMessageReceived.sender));
       } else {
         console.log("isko display krna hai!");
         // setMessages([...messages, newMessageReceived]);
         dispatch(addMessage(newMessageReceived));
+        //sort user, move newly message user at the top
+        // activeUsers.push(newMessageReceived.chat.users[0]);
+        dispatch(moveNewMsgOnTop(newMessageReceived.sender));
       }
     });
     // cleanup function to unsubscribe the event listener

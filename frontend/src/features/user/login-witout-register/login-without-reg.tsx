@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSignupWOMMutation } from "@/store/api/authApi";
 import { setCredentials } from "@/store/slices/authSlice";
+import { Spinner } from "@/features/spinner";
 
 interface userState {
   name: string;
@@ -201,7 +202,11 @@ export function LoginWOR() {
             type="submit"
             className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded hover:bg-purple-500 focus:outline-none focus:shadow-outline-purple active:bg-purple-500"
           >
-            Start chatting now!
+            {isLoading ? (
+              <Spinner height={"h-6"} width={"w-6"} />
+            ) : (
+              <p>Start chatting now!</p>
+            )}
           </button>
         </div>
       </form>
