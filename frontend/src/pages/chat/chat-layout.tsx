@@ -102,19 +102,22 @@ export function ChatLayoutPage() {
   });
 
   return (
-    <div className="mb-12 flex  flex-col justify-center gap-2 py-10 sm:flex-row h-screen">
-      <section className={userDivClasse}>
-        <GenderFilter />
-        <div className="flex flex-row h-full">
-          <Sidebar />
-          <ActiveUsers flag="usersList" />
-          {/* {isSuccess && <ActiveUsers />} */}
-        </div>
-      </section>
-      <section className={outletDivClasses}>
-        {/* <ChatWindowLayout /> */}
-        <Outlet></Outlet>
-      </section>
+    <div className="h-screen flex flex-col items-center">
+      <div className="mb-12 flex  flex-col justify-center gap-2 py-10 sm:flex-row w-full h-5/6 lg:w-4/5">
+        <section className={userDivClasse}>
+          <GenderFilter />
+          <div className="flex flex-row h-full">
+            <Sidebar />
+            <ActiveUsers flag="usersList" />
+            {/* {isSuccess && <ActiveUsers />} */}
+          </div>
+        </section>
+        <section className={outletDivClasses}>
+          {/* <ChatWindowLayout /> */}
+          <Outlet></Outlet>
+        </section>
+      </div>
+      {/* <div className="bg-pink-500">add div</div> */}
     </div>
   );
 }

@@ -9,8 +9,8 @@ import { RootState } from "../store";
 
 const initialState: any = {
   userDiveClasses: [
-    "h-full lg:h-5/6 flex flex-col w-full lg:w-3/5",
-    "bg-purple-100 sm:block w-full rounded-xl text-black h-full hidden",
+    "h-full flex flex-col w-full lg:w-3/5",
+    "bg-purple-100 hidden lg:block w-full h-full rounded-xl text-black",
   ],
 };
 

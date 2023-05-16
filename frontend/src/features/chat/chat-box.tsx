@@ -24,7 +24,7 @@ export function ChatBox() {
   if (!selectedUser) {
     // content = <p>Please Select a user to start chat... chat box</p>;
     content = (
-      <div className="flex items-center py-8 rounded-xl">
+      <div className="flex items-center rounded-xl pt-6">
         <WelcomeChat />
         {/* <Spinner /> */}
       </div>

@@ -20,7 +20,7 @@ export function Sidebar() {
     dispatch(
       setDisplayedClasses([
         "h-full lg:h-5/6 flex flex-col w-full lg:w-3/5 hidden lg:block",
-        "bg-purple-100 sm:block w-full rounded-xl text-black h-full",
+        "bg-purple-100 lg:block w-full rounded-xl text-black h-full",
       ])
     );
     dispatch(setChatInitialState());

@@ -9,7 +9,7 @@ export function Inbox() {
   const currentInbox = useSelector(getInbox);
 
   return (
-    <div className="h-full p-1">
+    <div className="flex flex-col h-full">
       <BackToUserBtn />
       <ActiveUsers flag="inbox" />
     </div>
