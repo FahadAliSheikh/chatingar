@@ -64,9 +64,15 @@ export function Messages() {
   ] = useSendMessageMutation();
 
   // Scroll to the bottom of the messages component
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = chatContainerRef.current;
+    container?.scrollTo({
+      top: container.scrollHeight,
+      behavior: "smooth",
+    });
+
     inputRef.current?.focus();
   }, [messages, isPickerVisible]);
 
@@ -154,7 +160,10 @@ export function Messages() {
 
   return (
     <>
-      <div className="flex flex-col flex-grow h-0 p-4 overflow-auto mb-4">
+      <div
+        className="flex flex-col flex-grow h-0 p-4 overflow-auto mb-4"
+        ref={chatContainerRef}
+      >
         <div className="flex flex-col h-full">
           {messages &&
             currentUser &&
@@ -181,7 +190,6 @@ export function Messages() {
           <div className={`  ${isPickerVisible ? "block" : "hidden"} `}>
             <Picker data={data} onEmojiSelect={handleEmojiSelect} />
           </div>
-          <div ref={messagesEndRef} />
         </div>
       </div>
       <div className="flex items-center mt-auto justify-between w-full p-3 border-t border-gray-300 gap-3">
