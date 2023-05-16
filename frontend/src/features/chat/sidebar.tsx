@@ -6,7 +6,10 @@ import { setDisplayedClasses } from "@/store/slices/displaySlice";
 import { getSelectedChat, setChatInitialState } from "@slices/chatSlice";
 import { moveNewMsgOnTop, removeSelectedUser } from "@slices/userSlice";
 import { addToInbox, getInbox } from "@/store/slices/notificationSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+// import NotificationSound from "./notification-sound.mp3";
+import NotificationSound from "/sound/notification.mp3";
+
 import {
   getSocket,
   offSocketReceiveMessage,
@@ -17,7 +20,13 @@ export function Sidebar() {
   const dispatch = useDispatch();
   const currentInbox = useSelector(getInbox);
   const [selectedIcon, setSelectedIcon] = useState(null);
+  const audioPlayer = useRef<HTMLAudioElement | null>(null);
 
+  function playAudio() {
+    if (audioPlayer.current) {
+      audioPlayer?.current.play();
+    }
+  }
   const handleClick = (icon: any) => {
     setSelectedIcon(icon);
 
@@ -38,6 +47,7 @@ export function Sidebar() {
     onSocketReceiveMessage((newMessageReceived: any) => {
       console.log("inside message received");
       if (!selectedChat || selectedChat._id != newMessageReceived.chat._id) {
+        playAudio();
         dispatch(addToInbox(newMessageReceived));
         dispatch(moveNewMsgOnTop(newMessageReceived.sender));
       }
@@ -91,6 +101,8 @@ export function Sidebar() {
           </span>
         </Link>
       </button>
+      <button onClick={playAudio}>Play</button>
+      <audio ref={audioPlayer} src={NotificationSound} />
     </div>
   );
 }
