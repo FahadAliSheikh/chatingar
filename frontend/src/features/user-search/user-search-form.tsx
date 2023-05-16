@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setActiveUsers } from "@/store/slices/userSlice";
 import { countries } from "@constants/countries";
 import { BackToUserBtn } from "../chat";
+import { Spinner } from "../spinner";
 
 interface User {
   name: string;
@@ -167,7 +168,11 @@ export function UserSearchForm() {
             className="w-full px-4 py-2 font-bold text-white bg-purple-500 rounded focus:outline-none focus:shadow-outline-purple active:bg-purple-500 hover:bg-purple-600"
             disabled={isLoading}
           >
-            Search
+            {isLoading ? (
+              <Spinner height={"h-6"} width={"w-6"} />
+            ) : (
+              <p>Search now!</p>
+            )}{" "}
           </button>
         </div>
       </form>
