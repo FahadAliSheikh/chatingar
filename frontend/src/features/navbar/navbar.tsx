@@ -129,7 +129,11 @@ export function Navbar() {
                       <a href="#">My Profile</a>
                     </li>
                     <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
-                      <a href="#" onClick={signOutHandler}>
+                      <a
+                        href="#"
+                        onClick={signOutHandler}
+                        className="text-red-800"
+                      >
                         Sign Out
                       </a>
                     </li>
@@ -215,9 +219,7 @@ export function Navbar() {
                       <a
                         href="#"
                         className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
+                          active ? "bg-gray-100 text-gray-900" : "text-red-700",
                           "block px-4 py-2 text-sm"
                         )}
                         onClick={signOutHandler}
