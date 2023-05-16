@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaMale, FaFemale } from "react-icons/fa";
 import { userApi } from "@/store/api/userApi";
 import { useDispatch } from "react-redux";
@@ -6,6 +6,8 @@ import { setActiveUsers } from "@slices/userSlice";
 
 export function GenderFilter() {
   console.log("GENDER FILTER COMP =>");
+  const [selectedGender, setSelectedGender] = useState("");
+
   const dispatch = useDispatch();
 
   const [
@@ -14,6 +16,8 @@ export function GenderFilter() {
   ] = userApi.endpoints.getActiveUsers.useLazyQuery();
 
   const handleGender = (gender: any) => {
+    setSelectedGender(gender);
+
     executeGetActiveUsersQuery({ gender: gender })
       .unwrap()
       .then((data) => {
@@ -28,7 +32,9 @@ export function GenderFilter() {
         <li className="mb-5">
           <a
             href="#"
-            className="hover:text-gray-400 "
+            className={`hover:text-red-700 ${
+              selectedGender === "" ? "text-red-700" : ""
+            }`}
             onClick={() => handleGender("")}
           >
             {<FaMale size={20} title="male" />} All
@@ -37,7 +43,9 @@ export function GenderFilter() {
         <li className="mb-5">
           <a
             href="#"
-            className="hover:text-gray-400 "
+            className={`hover:text-red-700 ${
+              selectedGender === "male" ? "text-red-700" : ""
+            }`}
             onClick={() => handleGender("male")}
           >
             {<FaMale size={20} title="male" />} Male
@@ -46,7 +54,9 @@ export function GenderFilter() {
         <li className="mb-5">
           <a
             href="#"
-            className="hover:text-gray-400"
+            className={`hover:text-red-700 ${
+              selectedGender === "female" ? "text-red-700" : ""
+            }`}
             onClick={() => handleGender("female")}
           >
             {<FaFemale size={20} title="female" />} Female
