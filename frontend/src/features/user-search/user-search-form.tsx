@@ -5,6 +5,7 @@ import { setActiveUsers } from "@/store/slices/userSlice";
 import { countries } from "@constants/countries";
 import { BackToUserBtn } from "../chat";
 import { Spinner } from "../spinner";
+import { emitSocketSearchUsers } from "@/socket";
 
 interface User {
   name: string;
@@ -44,12 +45,13 @@ export function UserSearchForm() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Call an API to submit the user data
-    executeGetActiveUsersQuery(user)
-      .unwrap()
-      .then((data) => {
-        console.log("setting new active users in state");
-        dispatch(setActiveUsers(data));
-      });
+    // executeGetActiveUsersQuery(user)
+    //   .unwrap()
+    //   .then((data) => {
+    //     console.log("setting new active users in state");
+    //     dispatch(setActiveUsers(data));
+    //   });
+    emitSocketSearchUsers(user);
   };
 
   return (

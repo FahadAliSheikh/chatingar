@@ -45,7 +45,6 @@ export const userSlice = createSlice({
       // action: PayloadAction<{ name: string; token: string }>
       action: PayloadAction<IUser>
     ) => {
-      console.log("moving new message on top");
       const indexToMove: number | undefined = state.activeUsers?.findIndex(
         (person) => person._id === action.payload._id
       );
@@ -54,9 +53,28 @@ export const userSlice = createSlice({
         indexToMove,
         1
       ); // Remove the object at the given index and store it in a variable
-      console.log("object to move", objectToMove);
       if (!objectToMove) return;
       state.activeUsers?.unshift(objectToMove);
+    },
+
+    removeLoggedOutUser: (state, action: PayloadAction<IUser>) => {
+      const removedUser = action.payload;
+      const index = state.activeUsers?.findIndex(
+        (obj: any) => obj._id === removedUser._id
+      );
+      if (index !== null && index !== undefined && index !== -1) {
+        state.activeUsers?.splice(index, 1);
+      }
+    },
+    addNewUser: (state, action: PayloadAction<IUser>) => {
+      const newUser = action.payload;
+      const index: number | undefined = state.activeUsers?.findIndex(
+        (person) => person._id === action.payload._id
+      );
+
+      if ((index === null && index === undefined) || index === -1) {
+        state.activeUsers?.push(newUser);
+      }
     },
   },
 });
@@ -67,11 +85,17 @@ export const {
   setSelectedUser,
   removeSelectedUser,
   moveNewMsgOnTop,
+  removeLoggedOutUser,
+  addNewUser,
 } = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.auth.value;
-export const getActiveUsers = (state: RootState) => state.user.activeUsers;
+export const getActiveUsers = (state: RootState) =>
+  // state.user.activeUsers
+  [...state.user.activeUsers].sort((a: any, b: any) =>
+    a.country.localeCompare(b.country)
+  );
 export const getSelectedUser = (state: RootState) => state.user.selectedUser;
 
 export default userSlice.reducer;

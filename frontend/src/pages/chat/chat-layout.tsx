@@ -11,6 +11,8 @@ import {
   setActiveUsers,
   getActiveUsers,
   setSelectedUser,
+  removeLoggedOutUser,
+  addNewUser,
 } from "@slices/userSlice";
 import { selectCurrentUser } from "@slices/authSlice";
 import { getDispalyClasses } from "@/store/slices/displaySlice";
@@ -25,6 +27,11 @@ import {
   offSocketGetUsers,
   offSocketSetup,
   offSocketConnected,
+  emitSocketSearchUsers,
+  onSocketGetRemovedUser,
+  oFFSocketGetRemovedUser,
+  onSocketGetNewUser,
+  oFFSocketGetNewUser,
 } from "@/socket";
 
 export function ChatLayoutPage() {
@@ -52,11 +59,18 @@ export function ChatLayoutPage() {
   }, [displayClasses]);
 
   // SEND EVEN TO SOCKER SERVER,FOR CONNECTION AND JOINING THE CHAT
+  let searchData = {
+    name: "",
+    gender: "",
+    country: "",
+  };
+
   useEffect(() => {
-    console.log("socket emit wala uf -2");
+    console.log("uf-2");
     onSocketConnected(() => {
       console.log("getting response after connection");
       emitSocketSetup(currentUser);
+      emitSocketSearchUsers(searchData);
     });
     return () => {
       offSocketConnected();
@@ -65,9 +79,17 @@ export function ChatLayoutPage() {
   }, [currentUser]);
 
   useEffect(() => {
+    console.log("UF-3");
     onSocketGetUsers((userdata: any) => {
       console.log("user coming from socket", userdata);
-      setUserUpdated(userdata);
+      // setUserUpdated(userdata);
+      const index = userdata.findIndex(
+        (obj: any) => obj._id === currentUser._id
+      );
+      if (index !== -1) {
+        userdata.splice(index, 1);
+      }
+      dispatch(setActiveUsers(userdata));
     });
     // cleanup function to unsubscribe the event listener
     return () => {
@@ -75,31 +97,39 @@ export function ChatLayoutPage() {
     };
   });
 
-  let searchData = {
-    name: "",
-    gender: "",
-    country: "",
-  };
-
   useEffect(() => {
-    console.log("UF-4");
-    const request = executeGetActiveUsersQuery(searchData);
-    // Clean up the query
-    // return () => {
-    //   // getActiveUsers.unsubscribe();
-    //   if (activeUsers) {
-    //     request.abort();
-    //     // dispatch(setActiveUsers(activeUsers));
-    //   }
-    // };
-  }, [userUpdated]);
-
-  useEffect(() => {
-    console.log("UF-5");
-    if (activeUsers) {
-      dispatch(setActiveUsers(activeUsers));
-    }
+    onSocketGetRemovedUser((removedUser: any) => {
+      console.log("a user has been removed", removedUser);
+      dispatch(removeLoggedOutUser(removedUser));
+    });
+    onSocketGetNewUser((newUser: any) => {
+      console.log("a user has been added", newUser);
+      dispatch(addNewUser(newUser));
+    });
+    return () => {
+      oFFSocketGetRemovedUser();
+      oFFSocketGetNewUser();
+    };
   });
+  // useEffect(() => {
+  //   console.log("UF-4");
+  //   // const request = executeGetActiveUsersQuery(searchData);
+  //   // Clean up the query
+  //   // return () => {
+  //   //   // getActiveUsers.unsubscribe();
+  //   //   if (activeUsers) {
+  //   //     request.abort();
+  //   //     // dispatch(setActiveUsers(activeUsers));
+  //   //   }
+  //   // };
+  // }, [userUpdated]);
+
+  // useEffect(() => {
+  //   console.log("UF-5");
+  //   if (activeUsers) {
+  //     dispatch(setActiveUsers(activeUsers));
+  //   }
+  // });
 
   return (
     <div className="h-screen flex flex-col items-center">

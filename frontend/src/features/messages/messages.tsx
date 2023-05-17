@@ -21,8 +21,8 @@ import {
   onSocketReceiveMessage,
   offSocketReceiveMessage,
   emitSocketSendMessage,
-  onSocketRemoveUser,
-  offSocketRemoveUser,
+  onSocketGetRemovedUser,
+  oFFSocketGetRemovedUser,
 } from "@/socket";
 //EMOJI LIBRARY
 import Picker from "@emoji-mart/react";
@@ -108,7 +108,7 @@ export function Messages() {
 
   //useEffect to handle remove user that has loggged out
   useEffect(() => {
-    onSocketRemoveUser((loggedOutUser: any) => {
+    onSocketGetRemovedUser((loggedOutUser: any) => {
       console.log("remove selected chat running");
       if (!selectedChat) return;
       console.log(selectedChat.users);
@@ -122,7 +122,7 @@ export function Messages() {
     });
     return () => {
       // socket.off("removeUser");
-      offSocketRemoveUser();
+      oFFSocketGetRemovedUser();
     };
   });
   const handleSendMessage = async (event: any) => {

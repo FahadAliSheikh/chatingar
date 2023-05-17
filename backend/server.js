@@ -67,21 +67,54 @@ const io = require("socket.io")(server, {
 
 let users = [];
 
-const addUser = (userId, socketId) => {
-  !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
+const addUser = (newUser) => {
+  !users.some((user) => user._id === newUser._id) && users.push(newUser);
 };
+// const addUser = (userId, socketId) => {
+//   !users.some((user) => user.userId === userId) &&
+//     users.push({ userId, socketId });
+// };
 
 const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
+// const getUser = (userId) => {
+//   return users.find((user) => user.userId === userId);
+// };
 const getUser = (userId) => {
-  return users.find((user) => user.userId === userId);
+  return users.find((user) => user._id === userId);
 };
 
 const getUserBySocket = (socketId) => {
   return users.find((user) => user.socketId === socketId);
+};
+
+const searchUsers = (searchData) => {
+  return users.filter((user) => {
+    const { name, gender, country } = searchData;
+
+    // Apply the search criteria one by one
+    if (
+      name &&
+      name !== "" &&
+      !user.name.toLowerCase().includes(name.toLowerCase())
+    ) {
+      return false;
+    }
+
+    if (gender && gender !== "" && user.gender !== gender) {
+      return false;
+    }
+
+    if (country && country !== "" && user.country !== country) {
+      return false;
+    }
+
+    // Add more conditions if needed...
+
+    return true;
+  });
 };
 
 io.on("connection", (socket) => {
@@ -89,29 +122,37 @@ io.on("connection", (socket) => {
   console.log("a user connected:", socket.id);
   socket.emit("connected");
   //take userId and socketId from user
-  socket.on("set_up_user", (user) => {
-    if (user) {
+  socket.on("set_up_user", async (newUser) => {
+    if (newUser) {
       // Add user to socket array
-      addUser(user._id, socket.id);
+      // addUser(user._id, socket.id); // from db users
+      delete newUser.token;
+      newUser.socketId = socket.id;
+      await addUser(newUser);
       // Update user's status in database
-      userController.updateActiveStatue(user._id, true);
+      // userController.updateActiveStatue(newUser._id, true);
       // Emit an event to all connected clients
-      io.emit("get_active_users", users);
+      socket.emit("get_active_users", users);
+      io.emit("get_new_single_user", newUser);
     }
   });
 
-  socket.on("remove_user", (user) => {
-    console.log("inside remove user");
+  socket.on("get_active_users", async (searchData) => {
+    const filteredUsers = await searchUsers(searchData);
+    socket.emit("get_active_users", filteredUsers);
+  });
+
+  socket.on("remove_user", async (user) => {
     // Remove user from socket array
-    removeUser(socket.id);
+    await removeUser(socket.id);
     // Update user's active status to false
     userController.updateActiveStatue(user._id, false);
     // Update user's chat status to false
     chatController.updateActiveStatue(user._id, false);
     // Emit socket event to all connected clients to remove user
-    io.emit("remove_user", user);
+    // io.emit("remove_user", user);
     // Emit socket event to all connected clients to get all active users
-    io.emit("get_active_users", users);
+    io.emit("get_removed_user", user);
   });
 
   //send and get message
@@ -125,7 +166,6 @@ io.on("connection", (socket) => {
     if (!receiver) return;
     // find user from socket array
     const user = getUser(receiver._id);
-
     if (!user) return;
     console.log("sending message to:", user.socketId);
     if (!user.socketId) return;
@@ -139,13 +179,14 @@ io.on("connection", (socket) => {
     console.log("a user disconnected!");
     const user = getUserBySocket(socket.id);
     if (!user) return;
-    if (user) {
-      // update user's active status to false
-      userController.updateActiveStatue(user.userId, false);
-    }
+    // if (user) {
+    //   // update user's active status to false
+    //   userController.updateActiveStatue(user.userId, false);
+    // }
     // remove user from socket array
     removeUser(socket.id);
     // Emit socket message to all connected clients for updated
-    io.emit("get_active_users", users);
+    // io.emit("get_active_users", users);
+    io.emit("get_removed_user", user);
   });
 });

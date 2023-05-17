@@ -53,7 +53,7 @@ const authUser = asyncHandler(async (req, res) => {
       country: user.country,
       pic: user.pic,
       token: generateToken(user._id),
-      hasEmail: user.email,
+      hasEmail: true,
     });
   } else {
     throw new Error("Invalid email or password!");
@@ -120,7 +120,10 @@ const registerWOEmail = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user._id,
       name: user.name,
+      age: user.age,
+      gender: user.gender,
       email: user.email,
+      country: user.country,
       pic: user.pic,
       token: generateToken(user._id),
       hasEmail: user.hasEmail,

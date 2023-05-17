@@ -22,6 +22,9 @@ export const offSocketSetup = () => {
 export const onSocketGetUsers = (callback: any) => {
   socket.on("get_active_users", callback);
 };
+export const emitSocketSearchUsers = (searchData: any) => {
+  socket.emit("get_active_users", searchData);
+};
 
 export const offSocketGetUsers = () => {
   socket.off("get_active_users");
@@ -42,14 +45,25 @@ export const emitSocketRemoveUser = (user: any) => {
   socket.emit("remove_user", user);
 };
 
-export const onSocketRemoveUser = (user: any) => {
-  socket.on("remove_user", user);
-};
+// export const onSocketRemoveUser = (user: any) => {
+//   socket.on("remove_user", user);
+// };
 
-export const offSocketRemoveUser = () => {
-  socket.off("remove_user");
+// export const offSocketRemoveUser = () => {
+//   socket.off("remove_user");
+// };
+export const onSocketGetRemovedUser = (callback: any) => {
+  socket.on("get_removed_user", callback);
 };
-
+export const oFFSocketGetRemovedUser = () => {
+  socket.off("get_removed_user");
+};
+export const onSocketGetNewUser = (callback: any) => {
+  socket.on("get_new_single_user", callback);
+};
+export const oFFSocketGetNewUser = () => {
+  socket.off("get_new_single_user");
+};
 export const getSocket = () => {
   if (!socket) {
     socket = io(SOCKET_URL);
