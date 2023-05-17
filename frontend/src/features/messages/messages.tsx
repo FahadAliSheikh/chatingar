@@ -179,8 +179,8 @@ export function Messages() {
                 <div
                   className={`max-w-md py-2 px-4 ${
                     isSentByMe(messages, m, i, currentUser?._id)
-                      ? "bg-purple-500 text-white rounded-br-md rounded-tl-md rounded-tr-md shadow-2xl"
-                      : "bg-gray-100 text-gray-700 rounded-bl-md rounded-tl-md rounded-tr-md shadow-2xl"
+                      ? "bg-purple-500 text-white rounded-bl-md rounded-tl-md rounded-tr-md shadow-2xl"
+                      : "bg-gray-100 text-gray-700 rounded-br-md rounded-tl-md rounded-tr-md shadow-2xl"
                   }`}
                 >
                   <p>{m.content}</p>

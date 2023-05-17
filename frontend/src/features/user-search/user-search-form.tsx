@@ -106,9 +106,7 @@ export function UserSearchForm() {
             Gender
           </label>
           <div>
-            <span className="mr-2">Female</span>
-
-            <label htmlFor="female" className="inline-flex items-center">
+            <label htmlFor="female" className="inline-flex items-center mr-5">
               <input
                 id="female"
                 name="gender"
@@ -117,15 +115,15 @@ export function UserSearchForm() {
                 checked={user.gender === "female"}
                 onChange={handleGenderChange}
                 // className="form-radio"
-                className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500"
+                className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500 mr-2"
               />
+              Female
             </label>
+
             <label
               htmlFor="male"
-              className="inline-flex items-center mr-2 gap-2"
+              className="inline-flex items-center mr-5 gap-2"
             >
-              <span className="ml-5">Male</span>
-
               <input
                 id="male"
                 name="gender"
@@ -135,6 +133,7 @@ export function UserSearchForm() {
                 onChange={handleGenderChange}
                 className="form-radio  text-purple-500 border-gray-300 focus:ring-2 focus:ring-purple-500"
               />
+              Male
             </label>
           </div>
         </div>

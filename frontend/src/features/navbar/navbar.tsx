@@ -125,9 +125,9 @@ export function Navbar() {
                     <li className="text-white hover:text-indigo-200">
                       <a href="/chat/chat-box">Chat page</a>
                     </li>
-                    <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
+                    {/* <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
                       <a href="#">My Profile</a>
-                    </li>
+                    </li> */}
                     <li className="text-white hover:text-indigo-200 md:hidden lg:hidded">
                       <a
                         href="#"
