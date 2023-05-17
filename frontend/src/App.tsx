@@ -9,6 +9,7 @@ import { UserSearchForm } from "@features/user-search/user-search-form";
 import { Layout } from "@features/layout";
 import { ChatLayoutPage } from "@pages/chat";
 import RequireAuth from "@store/slices/RequireAuth";
+import WithoutAuth from "@store/slices/withoutAuth";
 import { ChatBox } from "@features/chat";
 import { Inbox } from "@features/inbox";
 import { ContactUs } from "./pages/contact-us";
@@ -23,13 +24,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="/home" element={<HomePage />} />
+          <Route element={<WithoutAuth />}>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/signin" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/frequely-asked" element={<Faqs />} />
+            <Route path="/safety" element={<Safety />} />
+          </Route>
 
-          <Route path="/signin" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="/frequely-asked" element={<Faqs />} />
-          <Route path="/safety" element={<Safety />} />
           <Route element={<RequireAuth />}>
             <Route path="/chat" element={<ChatLayoutPage />}>
               <Route path="search" element={<UserSearchForm />} />
