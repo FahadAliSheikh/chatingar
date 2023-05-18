@@ -145,10 +145,31 @@ const updateActiveStatue = asyncHandler(async (userId, status) => {
   }
 });
 
+const blockUser = asyncHandler(async (req, res) => {
+  let userId = req.body.userId;
+  console.log("inside block user");
+  // if (!userId || req.user._id) return;
+
+  const foundBlockey = await User.findById(userId);
+  const foundUser = await User.findById(req.user._id);
+
+  if (!foundUser || !foundBlockey) {
+    throw new Error("User not found!");
+  }
+  const alreadyExist = foundUser.blockedUsers.some((buser) => buser === userId);
+  console.log("areadd", alreadyExist);
+  if (!alreadyExist) {
+    foundUser.save();
+  }
+  res.send(foundUser);
+  // res.send({ message: "user has been blocked!" });
+});
+
 module.exports = {
   registerUser,
   registerWOEmail,
   authUser,
   allUsers,
   updateActiveStatue,
+  blockUser,
 };

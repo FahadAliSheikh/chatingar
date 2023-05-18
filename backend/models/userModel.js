@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema(
     country: { type: "String", required: true },
     hasEmail: { type: "Boolean", required: true },
     isActive: { type: "Boolean", required: true, default: false },
-
+    blockedUsers: { type: Array, required: false, default: [] },
     pic: {
       type: "String",
       default:
